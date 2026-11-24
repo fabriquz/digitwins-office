@@ -285,6 +285,22 @@ html body .big-i{width:56px!important;height:56px!important;margin:6px 0 16px 6p
 .tw-ov .gauge{stroke-dasharray:164;stroke-dashoffset:164;transition:stroke-dashoffset 1.6s ease .3s}.tw-ov.in .gauge{stroke-dashoffset:52}
 .tw-ov .grow{stroke-dasharray:90;stroke-dashoffset:90;transition:stroke-dashoffset 1.6s ease .3s}.tw-ov.in .grow{stroke-dashoffset:0}
 @media(prefers-reduced-motion:reduce){.tw3 *{animation:none!important}}
+
+/* Ana sayfa Gündem: canlı dal, her yeni duyuru/haber yeni yaprak olarak bağlanır */
+.agmap{position:relative;display:grid;gap:14px 70px;align-items:center;margin:-36px 0 48px;padding:18px 22px;border-radius:22px;background:radial-gradient(500px 200px at 0% 50%,#E0F2FE,transparent 65%),#FBFDFE;border:1px solid var(--line)}
+.agmap > *:not(svg){position:relative;z-index:1}
+.ag-node{justify-self:start;padding:8px 18px 8px 8px!important}
+.ag-node .ph-ic{width:40px;height:40px}.ag-node .ph-ic .ico{width:20px;height:20px}
+.ag-node b{display:block;font-family:var(--display);font-size:18px;font-weight:800;color:#fff;line-height:1}
+.ag-node .s{display:inline-flex!important;align-items:center;gap:6px}
+.ag-leaves{display:grid;gap:8px;justify-items:start}
+.ag-leaves .leaf{max-width:100%}
+.ag-leaves .leaf .lt{display:inline-flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.ag-wait{border-style:dashed!important;border-color:color-mix(in srgb,var(--c) 45%,transparent)!important;background:#fff!important;opacity:.85}
+.ag-all{justify-self:start;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--brand)}
+.agmap svg.ph-lines path.br{stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 1.4s ease-out forwards}
+@media(min-width:860px){.agmap{grid-template-columns:auto 1fr auto}.ag-all{justify-self:end}}
+@media(max-width:859px){.ag-leaves{padding-left:34px}}
 main{flex:1;width:100%}
 .page{padding:40px 0 72px;animation:fade .3s ease-out}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -1221,9 +1237,16 @@ function renderHome() {
     <div>${renderDigitalTwinVisual()}</div>
   </section>
   ${(() => { const a = AG[state.lang], x = ANNOUNCEMENTS[0], nw = NEWS[0]; const pg = x && PAGES.find(p => p.id === x.page);
-    const ann = `<button class="ann-strip" onclick="agendaTab='ann';navigate('gundem')"><span class="as-k"><span class="dot live"></span>${a.ann}<span class="as-n">${ANNOUNCEMENTS.length}</span></span><span class="as-t">${pg ? `<b>${t(pg.title)}</b> · ${x.date || a.soon}` : '—'}</span><span class="as-g">${dict.viewAll} ${ARROW}</span></button>`;
-    const news = `<button class="ann-strip news" onclick="agendaTab='news';navigate('gundem')"><span class="as-k">${S('<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Z"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>', 'ico-sm')}${a.news}${NEWS.length ? `<span class="as-n">${NEWS.length}</span>` : ''}</span><span class="as-t">${nw ? `<b>${nw.title}</b> · ${nw.source}` : a.newsSoon}</span><span class="as-g">${dict.viewAll} ${ARROW}</span></button>`;
-    return `<div class="ann-row">${ann}${news}</div>`; })()}`;
+    const meg = S('<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>', 'ico');
+    const leaves = ANNOUNCEMENTS.map(x => { const pg = PAGES.find(p => p.id === x.page), dv = DIVISIONS[pg.division];
+        return leafLink({ label: t(pg.title), small: `${a.strip} · ${x.date || a.soon}`, click: `navigate('${pg.id}')`, style: cv(dv) }); })
+      .concat(NEWS.slice(0, 3).map(n => leafLink({ label: n.title, small: `${a.news} · ${n.source}`, click: `window.open('${n.url}','_blank')`, style: '--c:#1D4ED8;--soft:#DBEAFE' })));
+    const wait = NEWS.length ? '' : `<button class="leaf ag-wait" data-dst onclick="agendaTab='news';navigate('gundem')" style="--c:#1D4ED8;--soft:#DBEAFE"><span class="lf"></span><span class="lt">${a.news}<span class="ls">${a.newsSoon}</span></span></button>`;
+    return `<section class="agmap" data-map="h" style="--c:#007397;--soft:#DDF1F7"><svg class="ph-lines" aria-hidden="true"></svg>
+      <button class="ph-node ag-node" data-src onclick="agendaTab='ann';navigate('gundem')"><span class="ph-ic">${meg}</span><span><span class="s" style="margin:0 0 4px"><span class="dot live"></span> LIVE</span><b>${dict.nav.agenda}</b></span></button>
+      <div class="ag-leaves">${leaves.join('')}${wait}</div>
+      <button class="ag-all" onclick="agendaTab='ann';navigate('gundem')">${dict.viewAll} ${ARROW}</button>
+    </section>`; })()}`;
 
   const order = ['platformlar', 'akademi', 'danismanlik', 'etkinlikler'];
   const leaf = it => { const tps = it.sharedTopics || [it.topic];
