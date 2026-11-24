@@ -230,6 +230,17 @@ html body .big-i{width:56px!important;height:56px!important;margin:6px 0 16px 6p
 .agmap{position:relative;display:grid;gap:14px 70px;align-items:center;margin:-36px 0 48px;padding:18px 22px;border-radius:22px;background:radial-gradient(500px 200px at 0% 50%,#E0F2FE,transparent 65%),#FBFDFE;border:1px solid var(--line)}.tw3 .agmap > *:not(svg){position:relative;z-index:1}.tw3 .ag-node{justify-self:start;padding:8px 18px 8px 8px!important}.tw3 .ag-node .ph-ic{width:40px;height:40px}.tw3 .ag-node .ph-ic .ico{width:20px;height:20px}.tw3 .ag-node b{display:block;font-family:var(--display);font-size:18px;font-weight:800;color:#fff;line-height:1}.tw3 .ag-node .s{display:inline-flex!important;align-items:center;gap:6px}.tw3 .ag-leaves{display:grid;gap:8px;justify-items:start}.tw3 .ag-leaves .leaf{max-width:100%}.tw3 .ag-leaves .leaf .lt{display:inline-flex;align-items:baseline;gap:6px;flex-wrap:wrap}.tw3 .ag-wait{border-style:dashed!important;border-color:color-mix(in srgb,var(--c) 45%,transparent)!important;background:#fff!important;opacity:.85}.tw3 .ag-all{justify-self:start;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--brand)}.tw3 .agmap svg.ph-lines path.br{stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 1.4s ease-out forwards}
 @media(min-width:860px){.agmap{grid-template-columns:auto 1fr auto}.ag-all{justify-self:end}}
 @media(max-width:859px){.ag-leaves{padding-left:34px}}
+
+/* Partnerler şeridi */
+.partners{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:44px;padding:18px 22px;border-radius:22px;background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}
+.partners::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#007397,#22A6C9 30%,#EA580C 55%,#1D4ED8 75%,#059669)}
+.pt-k{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
+.pt-row{display:flex;flex-wrap:wrap;gap:12px;flex:1}
+.pt-card{display:inline-flex;align-items:baseline;gap:8px;padding:12px 20px;border-radius:14px;background:var(--tint);border:1px solid var(--line-2);transition:transform .2s,border-color .2s,box-shadow .2s}
+.pt-card b{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--pc,var(--ink))}
+.pt-card small{font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.08em}
+.pt-card:hover{transform:translateY(-2px);border-color:var(--pc,var(--brand));box-shadow:0 10px 22px -14px var(--pc,var(--brand))}
+.pt-add{background:#fff;border:1.5px dashed var(--line)}.pt-add span{font-size:20px;font-weight:700;color:var(--brand)}
 main{flex:1;width:100%}
 .page{padding:40px 0 72px;animation:fade .3s ease-out}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -1228,7 +1239,12 @@ function renderHome() {
         </button>
       </div></div>
     </div>
-  </section>`;
+  </section>
+  ${(() => { const L = { tr: ['Partnerlerimiz', 'Partnerimiz olun'], uz: ['Hamkorlarimiz', 'Hamkor bo‘ling'], ru: ['Наши партнёры', 'Станьте партнёром'], en: ['Our Partners', 'Become a partner'] }[state.lang];
+    const P = [['Uyumsoft', 'ERP', '#E11D48'.replace('E11D48', '0369A1'), 'erp'], ['TREX', 'MES', '#1D4ED8', 'mes']];
+    return `<section class="partners"><span class="pt-k"><span class="dot live"></span>${L[0]}</span>
+      <div class="pt-row">${P.map(([n, r, c, id]) => `<button class="pt-card" style="--pc:${c}" onclick="navigate('${id}')"><b>${n}</b><small>${r}</small></button>`).join('')}
+        <button class="pt-card pt-add" onclick="navigate('iletisim')"><span>+</span><small>${L[1]}</small></button></div></section>`; })()}`;
 }
 
 // Aynı konu hattındaki yaprakları vurgular (tıkla: sabitle, üzerine gel: önizle)
