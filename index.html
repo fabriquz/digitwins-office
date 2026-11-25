@@ -968,6 +968,10 @@ select:focus{outline:none;border-color:var(--brand-2);box-shadow:0 0 0 3px rgba(
 #bolumler .tree .leaf,#bolumler .tree .lt,#bolumler .tree .lay-t small{font-size:var(--fs-leaf)!important}
 #bolumler .tree .bnode small,#bolumler .tree .snode,#bolumler .tree .root span.s,#bolumler .tree .lay-badge{font-size:var(--fs-meta)!important}
 #bolumler .tree .leaf{min-height:40px}
+#bolumler .tree .leaf{box-sizing:border-box;width:230px;max-width:230px!important;height:54px;min-height:54px!important;line-height:1.2;border-radius:27px}
+#bolumler .tree .leaf .lt{flex:1;min-width:0;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#bolumler .tree .leaf{gap:6px;padding-left:6px!important;padding-right:6px!important}
+#bolumler .tree .leaf .lt{letter-spacing:-.025em;word-spacing:-1px}#bolumler .tree .leaf{gap:5px!important}
 </style>
 </head>
 <body>
