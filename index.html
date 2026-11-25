@@ -676,6 +676,15 @@ svg.ph-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:non
 .cband a.big{display:block;font-family:var(--mono);font-size:20px;font-weight:600;color:#fff;margin-top:6px}
 .cband .btn{background:#fff;color:var(--navy)}
 .ag-tab-leaf .ag-n{margin-left:6px}
+
+/* Zihin haritası: dallar daha ferah */
+@media(min-width:700px){
+  .tree-wrap .tree .side{gap:76px}
+  .tree-wrap .tree .leaves{gap:16px}
+  .tree-wrap .tree .subs{gap:40px}
+  .tree-wrap .tree .side.left,.tree-wrap .tree .side.right{padding:24px 0}
+}
+@media(max-width:699px){.tree-wrap .tree .leaves{gap:12px}.tree-wrap .tree .subs{gap:28px}}
 </style>
 </head>
 <body>
@@ -1179,9 +1188,9 @@ function renderHome() {
   ${(() => { const a = AG[state.lang], x = ANNOUNCEMENTS[0], nw = NEWS[0]; const pg = x && PAGES.find(p => p.id === x.page);
     const meg = S('<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>', 'ico');
     const leaves = ANNOUNCEMENTS.map(x => { const pg = PAGES.find(p => p.id === x.page), dv = DIVISIONS[pg.division];
-        return leafLink({ label: t(pg.title), small: `${a.strip} · ${x.date || a.soon}`, click: `navigate('${pg.id}')`, style: cv(dv) }); })
+        return leafLink({ label: t(pg.title), small: x.date ? `${a.strip} · ${x.date}` : a.strip, click: `navigate('${pg.id}')`, style: cv(dv) }); })
       .concat(NEWS.slice(0, 3).map(n => leafLink({ label: n.title, small: `${a.news} · ${n.source}`, click: `window.open('${n.url}','_blank')`, style: '--c:#1D4ED8;--soft:#DBEAFE' })));
-    const wait = NEWS.length ? '' : `<button class="leaf ag-wait" data-dst onclick="agendaTab='news';navigate('gundem')" style="--c:#1D4ED8;--soft:#DBEAFE"><span class="lf"></span><span class="lt">${a.news}<span class="ls">${a.newsSoon}</span></span></button>`;
+    const wait = '';
     return `<section class="agmap" data-map="h" style="--c:#007397;--soft:#DDF1F7"><svg class="ph-lines" aria-hidden="true"></svg>
       <button class="ph-node ag-node" data-src onclick="agendaTab='ann';navigate('gundem')"><span class="ph-ic">${meg}</span><span><span class="s" style="margin:0 0 4px"><span class="dot live"></span> LIVE</span><b>${dict.nav.agenda}</b></span></button>
       <div class="ag-leaves">${leaves.join('')}${wait}</div>
@@ -1613,15 +1622,16 @@ function renderAgendaPage() {
   const anns = ANNOUNCEMENTS.map(x => {
     const pg = PAGES.find(p => p.id === x.page), dv = DIVISIONS[pg.division];
     return `<button class="card ag-item" data-hook style="${cv(dv)}" onclick="navigate('${pg.id}')">
-      <span class="ag-date">${cal}<b>${x.date || '—'}</b></span>
-      <span class="ag-body"><span class="tag">${t(dv.title)}</span><h3>${t(pg.title)}</h3><p>${t(pg.subtitle)}</p><small>${x.date ? '' : a.soon}</small></span>
+      <span class="ag-date">${x.date ? `${cal}<b>${x.date}</b>` : S('<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>', 'ico')}</span>
+      <span class="ag-body"><span class="tag">${t(dv.title)}</span><h3>${t(pg.title)}</h3><p>${t(pg.subtitle)}</p></span>
       <span class="ag-go">${a.detail} ${ARROW}</span></button>`;
   }).join('');
   const news = NEWS.length ? NEWS.map(n => `<a class="card ag-item" data-hook href="${n.url}" target="_blank" rel="noopener" style="--c:#007397;--soft:#DDF1F7">
       <span class="ag-date">${S('<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>', 'ico')}<b>${n.date || ''}</b></span>
       <span class="ag-body"><span class="tag">${n.source}</span><h3>${n.title}</h3></span><span class="ag-go">${ARROW}</span></a>`).join('')
     : `<div class="ag-empty" data-hook>${S('<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>', 'ico')}<p>${a.newsEmpty}</p></div>`;
-  const right = [['ann', a.ann, ANNOUNCEMENTS.length], ['news', a.news, NEWS.length]].map(([id, lab, n]) =>
+  if (!NEWS.length) agendaTab = 'ann';
+  const right = [['ann', a.ann, ANNOUNCEMENTS.length]].concat(NEWS.length ? [['news', a.news, NEWS.length]] : []).map(([id, lab, n]) =>
     leafLink({ label: lab, small: String(n), click: `setAgendaTab('${id}')`, on: agendaTab === id })).join('');
   return `<div class="dmap" style="--c:#007397;--soft:#DDF1F7"><svg class="spine" aria-hidden="true"></svg>
   ${crumb([{ label: dict.nav.agenda }])}
