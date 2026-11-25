@@ -690,8 +690,9 @@ svg.ph-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:non
 .limb{opacity:.92}
 .bloom{animation:bloom 3.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
 @keyframes bloom{50%{opacity:.75}}
-.tree-wrap .tree .root{border-radius:999px;background:radial-gradient(120% 90% at 30% 20%,#0A8DB5 0%,#007397 40%,#0B3B52 100%);box-shadow:0 0 0 8px rgba(34,197,94,.10),0 0 0 16px rgba(0,115,151,.06),0 18px 36px -16px rgba(11,27,51,.6)}
-@media(min-width:700px){.tree-wrap .tree .root{width:236px;height:196px;border-radius:50%;justify-content:center;padding:18px 20px}}
+.tree-wrap .tree .root{border-radius:999px;background:linear-gradient(160deg,#0A86AD 0%,#007397 45%,#0B2F45 100%);box-shadow:0 0 0 6px #fff,0 0 0 7px rgba(0,115,151,.22),0 20px 40px -18px rgba(11,27,51,.55)}
+@media(min-width:700px){.tree-wrap .tree .root{width:208px;height:208px;border-radius:50%;justify-content:center;padding:0;gap:12px}
+.tree-wrap .tree .root .root-core{width:72px;height:72px;padding:13px}}
 @media (prefers-reduced-motion:reduce){.bloom{animation:none}}
 </style>
 </head>
@@ -1332,15 +1333,14 @@ function drawTree() {
   tree.querySelectorAll('.grp').forEach(g => {
     const c = g.dataset.c, n = R(g.querySelector('.bnode')), left = g.classList.contains('l');
     const rx = (root.l + root.r) / 2;
-    const tx = left ? n.r - 4 : n.l + 4, st = wide ? onOval(tx, n.cy, 10) : [rx, prevB];
+    const tx = left ? n.r - 4 : n.l + 4, st = wide ? onOval(tx, n.cy, 2) : [rx, prevB];
     const P1 = wide ? ctl(st[0], st[1], tx, n.cy) : ctl(rx, prevB, n.cx, n.t + 2), d1 = pd(P1);
     prevB = R(g).b - 2;
     // organik dal: gövdeden kalın çıkıp incelen, yapraklı, çiçekli
     out += `<path class="br" d="${d1}" stroke="${c}" stroke-width="${wide ? 20 : 12}" stroke-opacity=".10" filter="url(#glow)"/>`
-         + `<path class="limb" d="${taper(P1, wide ? 20 : 12, wide ? 6 : 4)}" fill="${c}"/><path class="br-flow" d="${d1}"/>`
+         + ` <path class="limb" d="${taper(P1, wide ? 14 : 9, wide ? 5 : 4)}" fill="${c}"/><path class="br-flow" d="${d1}"/>`
          + `<path class="beam" d="${d1}" pathLength="100"/>`
-         + leafAt(P1, .38, left ? 1 : -1, '#22C55E', .85) + leafAt(P1, .62, left ? -1 : 1, '#16A34A', .75)
-         + (wide ? flower(...cub(P1, .5), c, 5) : '');
+         ;
     // bölümden dışarı uzanan çıkış hattı (iç sayfada soldan gelen dalın kaynağı)
     if (wide) {
       const G = R(g), ex = left ? -60 : T.width + 60, yb = G.b + 12, sx = n.cx;
