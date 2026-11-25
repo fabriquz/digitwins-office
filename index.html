@@ -1031,6 +1031,11 @@ select:focus{outline:none;border-color:var(--brand-2);box-shadow:0 0 0 3px rgba(
 #bolumler .tree .bnode small,#bolumler .tree .snode,#bolumler .tree .root span.s{font-weight:700!important}
 #bolumler .tree .leaf .lg-k{font-weight:800}
 #bolumler .tree .leaf .lt{letter-spacing:-.02em}
+#bolumler .tree .leaf{width:200px!important;max-width:200px!important;height:36px!important;min-height:36px!important;border-radius:18px!important}
+#bolumler .tree .leaf .lt{white-space:nowrap;-webkit-line-clamp:1;line-clamp:1}
+#bolumler .tree .leaf .dt-mini{width:24px!important;height:24px!important}
+@media(max-width:699px){#bolumler .tree .leaf{width:100%!important;max-width:none!important}}
+@media(min-width:700px){#bolumler .tree .leaf:has(.tp-b:nth-child(3)){width:236px!important;max-width:236px!important}}
 </style>
 </head>
 <body>
@@ -1533,10 +1538,19 @@ function renderHome() {
 
   const order = ['platformlar', 'akademi', 'danismanlik', 'etkinlikler'];
   const DT_MINI = `<svg class="dt-mini" viewBox="0 0 400 442" aria-hidden="true"><polygon points="197,221 359,131 359,311 197,401" fill="#22a6c9" stroke="#22a6c9" stroke-width="16" stroke-linejoin="round"/><path d="M197,41 L359,131 M197,41 L41,131 L197,221 M41,131 L41,311 L197,401" fill="none" stroke="#22a6c9" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><g fill="#fff" stroke="#22a6c9" stroke-width="18"><circle cx="197" cy="41" r="30"/><circle cx="41" cy="131" r="30"/><circle cx="197" cy="221" r="30"/><circle cx="41" cy="311" r="30"/></g></svg>`;
+  const MAP_SHORT = {
+    'bolge-kurulumu': { tr: 'Bölge Kurulumu', en: 'Zone Setup', ru: 'Создание зоны', uz: 'Hudud tashkil etish' },
+    'bolge-tanitim-satis': { tr: 'Bölge Pazarlaması', en: 'Zone Marketing', ru: 'Маркетинг зоны', uz: 'Hudud marketingi' },
+    'bolge-yonetimi': { tr: 'Bölge Yönetimi', en: 'Zone Management', ru: 'Управление зоной', uz: 'Hudud boshqaruvi' },
+    'uretim-yonetimi': { tr: 'Üretim Yönetimi', en: 'Production Mgmt', ru: 'Управление пр-вом', uz: 'Ishlab chiqarish' },
+    'danismanlik-kurulum': { tr: 'Bölge Kurulumu', en: 'Zone Setup', ru: 'Создание зоны', uz: 'Hudud tashkil etish' },
+    'yatirimci-cekme': { tr: 'Yatırımcı Çekme', en: 'Attracting Investors', ru: 'Привлечение инвесторов', uz: 'Investor jalb qilish' },
+    'danismanlik-yonetim': { tr: 'Bölge Yönetimi', en: 'Zone Management', ru: 'Управление зоной', uz: 'Hudud boshqaruvi' }
+  };
   const DT_IDS = ['iqostim', 'invest360', 'investmagnet', 'iqpark'];
   const LEAF_LOGO = { erp: { src: 'assets/partners/uyumsoft.svg', k: 'ERP' }, mes: { src: 'assets/partners/trex.png', dk: true, k: 'MES' } };
   const leaf = it => { const tps = it.sharedTopics || [it.topic];
-    return `<button class="leaf" data-tp="${tps.join(' ')}" onclick="navigate('${it.id}')" onmouseenter="hlTopic('${tps[0]}', true)" onmouseleave="hlTopic(null, true)"><span class="lf"></span>${LEAF_LOGO[it.id] ? `<span class="lt lt-logo" aria-label="${t(it.title)}"><span class="lg-k">${LEAF_LOGO[it.id].k}</span><span class="lg-img ${LEAF_LOGO[it.id].dk ? 'dk' : ''}"><img src="${LEAF_LOGO[it.id].src}" alt="${t(it.title)}"></span></span>` : `<span class="lt${DT_IDS.includes(it.id) ? ' lt-dt' : ''}">${DT_IDS.includes(it.id) ? DT_MINI : ''}${t(it.title)}</span>`}<span class="tps">${tps.map(tp => `<span class="tp-b tp-${tp}" title="${t(TOPIC_LABELS[tp])}">${TOPIC_ICONS[tp]('ico-xs')}</span>`).join('')}</span></button>`; };
+    return `<button class="leaf" data-tp="${tps.join(' ')}" onclick="navigate('${it.id}')" onmouseenter="hlTopic('${tps[0]}', true)" onmouseleave="hlTopic(null, true)"><span class="lf"></span>${LEAF_LOGO[it.id] ? `<span class="lt lt-logo" aria-label="${t(it.title)}"><span class="lg-k">${LEAF_LOGO[it.id].k}</span><span class="lg-img ${LEAF_LOGO[it.id].dk ? 'dk' : ''}"><img src="${LEAF_LOGO[it.id].src}" alt="${t(it.title)}"></span></span>` : `<span class="lt${DT_IDS.includes(it.id) ? ' lt-dt' : ''}">${DT_IDS.includes(it.id) ? DT_MINI : ''}${MAP_SHORT[it.id] ? MAP_SHORT[it.id][state.lang] : t(it.title)}</span>`}<span class="tps">${tps.map(tp => `<span class="tp-b tp-${tp}" title="${t(TOPIC_LABELS[tp])}">${TOPIC_ICONS[tp]('ico-xs')}</span>`).join('')}</span></button>`; };
   const legend = `<div class="topics">${Object.keys(TOPIC_LABELS).map(tp => `<button class="tchip" data-tp="${tp}" onclick="hlTopic('${tp}')" onmouseenter="hlTopic('${tp}', true)" onmouseleave="hlTopic(null, true)"><span class="tp-b tp-${tp}">${TOPIC_ICONS[tp]('ico-xs')}</span>${t(TOPIC_LABELS[tp])}</button>`).join('')}</div>`;
   const mk = (dk, side) => {
     const div = DIVISIONS[dk];
