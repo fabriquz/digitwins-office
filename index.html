@@ -1722,12 +1722,6 @@ function drawTree() {
     });
     else g.querySelectorAll('.leaf:not(.sh-m)').forEach(lf => link(n, R(lf), 2.6, .55));
   });
-  // Akademi ↔ Danışmanlık: aynı konudaki kutu çiftleri ince köprüyle bağlanır
-  if (wide) { const pairs = [['bolge-kurulumu', 'danismanlik-kurulum'], ['bolge-tanitim-satis', 'yatirimci-cekme'], ['bolge-yonetimi', 'danismanlik-yonetim']];
-    pairs.forEach(([x, y], i) => { const A = tree.querySelector(`.leaf[onclick="navigate('${x}')"]`), D = tree.querySelector(`.leaf[onclick="navigate('${y}')"]`); if (!A || !D) return;
-      const P = R(A), Q = R(D), ox = 7 + (2 - i) * 6, x0 = P.r + 1;
-      out += `<path class="br bridge" d="M${x0} ${P.cy} C${x0 + ox} ${P.cy}, ${x0 + ox} ${Q.cy}, ${x0} ${Q.cy}" stroke="#64748B" stroke-width="1.6" stroke-opacity=".6" stroke-dasharray="3 3" fill="none"/>`
-           + `<circle cx="${x0}" cy="${P.cy}" r="2.6" fill="#EA580C"/><circle cx="${x0}" cy="${Q.cy}" r="2.6" fill="#1D4ED8"/>`; }); }
   // GreenCarbonAI katmanı: merkezden zemine inen canlı sarmaşık
   const lay = tree.querySelector('.layer');
   if (lay) {
