@@ -1753,6 +1753,7 @@ function renderApp() {
   renderLang();
   document.getElementById('nav-demo-text').textContent = dict.demoBtn;
   document.getElementById('footer-contact-link').textContent = dict.nav.contact;
+  document.querySelector('.flink').style.display = state.route === 'iletisim' ? 'none' : '';
   document.getElementById('modal-title').textContent = dict.modalTitle;
   document.getElementById('modal-sub').textContent = dict.modalSub;
   document.getElementById('lbl-topic').textContent = dict.lblTopic;
