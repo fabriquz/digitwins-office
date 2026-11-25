@@ -1036,6 +1036,12 @@ select:focus{outline:none;border-color:var(--brand-2);box-shadow:0 0 0 3px rgba(
 #bolumler .tree .leaf .dt-mini{width:24px!important;height:24px!important}
 @media(max-width:699px){#bolumler .tree .leaf{width:100%!important;max-width:none!important}}
 @media(min-width:700px){#bolumler .tree .leaf:has(.tp-b:nth-child(3)){width:236px!important;max-width:236px!important}}
+.shared{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.shared .leaves{display:flex;flex-direction:column;gap:12px;padding:0!important}
+.sh-cap{align-self:flex-start;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;color:#fff;background:linear-gradient(90deg,#EA580C,#1D4ED8)}
+#bolumler .tree .leaf.sh{border:2px solid transparent!important;background:linear-gradient(#F1F5F9,#F1F5F9) padding-box,linear-gradient(90deg,#EA580C,#1D4ED8) border-box!important}
+@media(min-width:700px){.sh-m{display:none!important}#bolumler .tree .grp[data-dk="danismanlik"] .leaves{display:none}}
+@media(max-width:699px){.shared{display:none}}
 </style>
 </head>
 <body>
@@ -1552,25 +1558,31 @@ function renderHome() {
   const leaf = it => { const tps = it.sharedTopics || [it.topic];
     return `<button class="leaf" data-tp="${tps.join(' ')}" onclick="navigate('${it.id}')" onmouseenter="hlTopic('${tps[0]}', true)" onmouseleave="hlTopic(null, true)"><span class="lf"></span>${LEAF_LOGO[it.id] ? `<span class="lt lt-logo" aria-label="${t(it.title)}"><span class="lg-k">${LEAF_LOGO[it.id].k}</span><span class="lg-img ${LEAF_LOGO[it.id].dk ? 'dk' : ''}"><img src="${LEAF_LOGO[it.id].src}" alt="${t(it.title)}"></span></span>` : `<span class="lt${DT_IDS.includes(it.id) ? ' lt-dt' : ''}">${DT_IDS.includes(it.id) ? DT_MINI : ''}${MAP_SHORT[it.id] ? MAP_SHORT[it.id][state.lang] : t(it.title)}</span>`}<span class="tps">${tps.map(tp => `<span class="tp-b tp-${tp}" title="${t(TOPIC_LABELS[tp])}">${TOPIC_ICONS[tp]('ico-xs')}</span>`).join('')}</span></button>`; };
   const legend = `<div class="topics">${Object.keys(TOPIC_LABELS).map(tp => `<button class="tchip" data-tp="${tp}" onclick="hlTopic('${tp}')" onmouseenter="hlTopic('${tp}', true)" onmouseleave="hlTopic(null, true)"><span class="tp-b tp-${tp}">${TOPIC_ICONS[tp]('ico-xs')}</span>${t(TOPIC_LABELS[tp])}</button>`).join('')}</div>`;
+  const SH_AK = ['bolge-kurulumu', 'bolge-tanitim-satis', 'bolge-yonetimi'], SH_DN = ['danismanlik-kurulum', 'yatirimci-cekme', 'danismanlik-yonetim'];
+  const SH_CAP = { tr: 'Akademi + Danışmanlık', en: 'Academy + Consulting', ru: 'Академия + Консалтинг', uz: 'Akademiya + Konsalting' };
+  const sleaf = (it, cls) => leaf(it).replace('class="leaf"', `class="leaf sh ${cls}" title="${SH_CAP[state.lang]}"`);
   const mk = (dk, side) => {
     const div = DIVISIONS[dk];
-    const items = PAGES.filter(p => p.division === dk && !p.layer);
+    const allItems = PAGES.filter(p => p.division === dk && !p.layer);
+    const shIds = dk === 'akademi' ? SH_AK : dk === 'danismanlik' ? SH_DN : [];
+    const items = allItems.filter(p => !shIds.includes(p.id));
+    const shMobile = shIds.map(id => allItems.find(p => p.id === id)).filter(Boolean).map(p => sleaf(p, 'sh-m')).join('');
     const subs = [...new Set(items.map(i => i.group).filter(Boolean))];
     const body = subs.length
       ? `<div class="subs">${subs.map(g => `
           <div class="sub"><span class="snode">${t(SUB_LABELS[g])}</span>
             <div class="leaves">${items.filter(i => i.group === g).map(leaf).join('')}</div></div>`).join('')}</div>`
-      : `<div class="leaves">${items.map(leaf).join('')}</div>`;
+      : `<div class="leaves">${items.map(leaf).join('')}${shMobile}</div>`;
     return `
-    <div class="grp ${side}" style="${cv(div)}" data-c="${div.hex}">
+    <div class="grp ${side}" style="${cv(div)}" data-c="${div.hex}" data-dk="${dk}">
       <button class="bnode" onclick="navigate('${dk}')">
         <span class="bi">${ICONS[dk]('ico')}</span>
-        <span><b>${t(div.title)}</b><small>${items.length} ${dict.sectionCountLabel}</small></span>
+        <span><b>${t(div.title)}</b><small>${allItems.length} ${dict.sectionCountLabel}</small></span>
       </button>
       ${body}
     </div>`;
   };
-  const groups = `<div class="side left">${mk('platformlar', 'l')}${mk('etkinlikler', 'l')}</div><div class="side right">${['akademi', 'danismanlik'].map(d => mk(d, 'r')).join('')}</div>`;
+  const groups = `<div class="side left">${mk('platformlar', 'l')}${mk('etkinlikler', 'l')}</div><div class="side right">${mk('akademi', 'r')}<div class="shared"><span class="sh-cap">${SH_CAP[state.lang]}</span><div class="leaves">${SH_DN.map(id => sleaf(PAGES.find(p => p.id === id), 'sh-w')).join('')}</div></div>${mk('danismanlik', 'r')}</div>`;
 
   return hero + `
   <section id="bolumler" style="scroll-margin-top:90px">
@@ -1662,7 +1674,10 @@ function drawTree() {
   const tree = document.getElementById('tree'), svg = document.getElementById('branches');
   if (!tree || !svg) return;
   tree.style.transform = 'none'; tree.parentElement.style.height = '';
-  const T = tree.getBoundingClientRect(), wide = window.innerWidth >= 700;
+  const wide = window.innerWidth >= 700;
+  { const sh = tree.querySelector('.shared'), l0 = tree.querySelector('.grp[data-dk="akademi"] .leaf:not(.sh-m)');
+    if (sh && wide && l0) { sh.style.marginLeft = '0px'; sh.style.marginLeft = (l0.getBoundingClientRect().left - sh.getBoundingClientRect().left) + 'px'; } else if (sh) sh.style.marginLeft = ''; }
+  const T = tree.getBoundingClientRect();
   const R = el => { const r = el.getBoundingClientRect(); return { l: r.left - T.left, r: r.right - T.left, t: r.top - T.top, b: r.bottom - T.top, cy: (r.top + r.bottom) / 2 - T.top, cx: (r.left + r.right) / 2 - T.left }; };
   const curve = (ax, ay, bx, by) => wide
     ? `M${ax} ${ay} C${ax + (bx - ax) * .55} ${ay}, ${bx - (bx - ax) * .55} ${by}, ${bx} ${by}`
@@ -1714,8 +1729,13 @@ function drawTree() {
       link(n, S2, 4.5, .8);
       sb.querySelectorAll('.leaf').forEach(lf => link(S2, R(lf), 2.4, .55));
     });
-    else g.querySelectorAll('.leaf').forEach(lf => link(n, R(lf), 2.6, .55));
+    else g.querySelectorAll('.leaf:not(.sh-m)').forEach(lf => link(n, R(lf), 2.6, .55));
   });
+  if (wide) { const gs = ['akademi', 'danismanlik'].map(k => tree.querySelector(`.grp[data-dk="${k}"]`)).filter(Boolean);
+    tree.querySelectorAll('.shared .leaf').forEach(lf => { const Q = R(lf);
+      gs.forEach(g => { const P = R(g.querySelector('.bnode')), c = g.dataset.c;
+        out += `<path class="br" d="${curve(P.r - 4, P.cy, Q.l + 4, Q.cy)}" stroke="${c}" stroke-width="2.4" stroke-opacity=".6"/>`; });
+      out += `<circle cx="${Q.l + 4}" cy="${Q.cy}" r="3.2" fill="#64748B" opacity=".8"/>`; }); }
   // GreenCarbonAI katmanı: merkezden zemine inen canlı sarmaşık
   const lay = tree.querySelector('.layer');
   if (lay) {
