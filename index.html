@@ -685,6 +685,14 @@ svg.ph-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:non
   .tree-wrap .tree .side.left,.tree-wrap .tree .side.right{padding:24px 0}
 }
 @media(max-width:699px){.tree-wrap .tree .leaves{gap:12px}.tree-wrap .tree .subs{gap:28px}}
+
+/* Organik ağaç: oval gövde, incelen dallar, çiçekler */
+.limb{opacity:.92}
+.bloom{animation:bloom 3.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bloom{50%{opacity:.75}}
+.tree-wrap .tree .root{border-radius:999px;background:radial-gradient(120% 90% at 30% 20%,#0A8DB5 0%,#007397 40%,#0B3B52 100%);box-shadow:0 0 0 8px rgba(34,197,94,.10),0 0 0 16px rgba(0,115,151,.06),0 18px 36px -16px rgba(11,27,51,.6)}
+@media(min-width:700px){.tree-wrap .tree .root{width:236px;height:196px;border-radius:50%;justify-content:center;padding:18px 20px}}
+@media (prefers-reduced-motion:reduce){.bloom{animation:none}}
 </style>
 </head>
 <body>
@@ -1305,21 +1313,38 @@ function drawTree() {
     ? `M${ax} ${ay} C${ax + (bx - ax) * .55} ${ay}, ${bx - (bx - ax) * .55} ${by}, ${bx} ${by}`
     : `M${ax} ${ay} C${ax} ${by}, ${ax} ${by}, ${bx} ${by}`;
   const root = R(tree.querySelector('.root'));
+  // ağaç dalı: gövdede kalın, uca doğru incelen organik dal
+  const cub = (P, t) => { const u = 1 - t; return [0, 1].map(k => u*u*u*P[0][k] + 3*u*u*t*P[1][k] + 3*u*t*t*P[2][k] + t*t*t*P[3][k]); };
+  const ctl = (ax, ay, bx, by) => wide ? [[ax, ay], [ax + (bx - ax) * .55, ay], [bx - (bx - ax) * .55, by], [bx, by]] : [[ax, ay], [ax, (ay + by) / 2], [bx, (ay + by) / 2], [bx, by]];
+  const pd = P => `M${P[0]} C${P[1]}, ${P[2]}, ${P[3]}`.replace(/,(?=\d|-)/g, ' ');
+  const taper = (P, w0, w1) => { const N = 30, L = [], Rr = [];
+    for (let i = 0; i <= N; i++) { const t = i / N, a = cub(P, Math.max(0, t - .01)), b = cub(P, Math.min(1, t + .01)), c = cub(P, t);
+      let dx = b[0] - a[0], dy = b[1] - a[1]; const m = Math.hypot(dx, dy) || 1; dx /= m; dy /= m;
+      const w = (w1 + (w0 - w1) * Math.pow(1 - t, 1.6)) / 2;
+      L.push(`${(c[0] - dy * w).toFixed(1)} ${(c[1] + dx * w).toFixed(1)}`); Rr.unshift(`${(c[0] + dy * w).toFixed(1)} ${(c[1] - dx * w).toFixed(1)}`); }
+    return `M${L.join(' L')} L${Rr.join(' L')}Z`; };
+  const leafAt = (P, t, side, col, sc) => { const a = cub(P, t - .01), b = cub(P, t + .01), c = cub(P, t), ang = Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI;
+    return `<path d="M0 0 C5 -7 14 -7 18 0 C14 7 5 7 0 0Z" fill="${col}" opacity=".9" transform="translate(${c[0].toFixed(1)} ${c[1].toFixed(1)}) rotate(${(ang + side * 42).toFixed(0)}) scale(${sc})"/>`; };
+  const flower = (x, y, col, r) => { let f = ''; for (let i = 0; i < 5; i++) f += `<ellipse cx="0" cy="${-r}" rx="${r * .62}" ry="${r}" fill="${col}" opacity=".85" transform="rotate(${i * 72})"/>`;
+    return `<g class="bloom" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})">${f}<circle r="${r * .55}" fill="#FDE68A"/></g>`; };
+  const onOval = (bx, by, pad) => { const cx = (root.l + root.r) / 2, cy = root.cy, rx = (root.r - root.l) / 2 - pad, ry = (root.b - root.t) / 2 - pad, t = Math.atan2((by - cy) / ry, (bx - cx) / rx); return [cx + rx * Math.cos(t), cy + ry * Math.sin(t)]; };
   let out = '<defs><filter id="glow" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="4"/></filter></defs>', prevB = root.b - 4;
   tree.querySelectorAll('.grp').forEach(g => {
     const c = g.dataset.c, n = R(g.querySelector('.bnode')), left = g.classList.contains('l');
     const rx = (root.l + root.r) / 2;
-    const d1 = wide ? (left ? curve(root.l + 6, root.cy, n.r - 2, n.cy) : curve(root.r - 6, root.cy, n.l + 2, n.cy))
-                    : `M${rx} ${prevB} L${n.cx} ${n.t + 2}`;
+    const tx = left ? n.r - 4 : n.l + 4, st = wide ? onOval(tx, n.cy, 10) : [rx, prevB];
+    const P1 = wide ? ctl(st[0], st[1], tx, n.cy) : ctl(rx, prevB, n.cx, n.t + 2), d1 = pd(P1);
     prevB = R(g).b - 2;
-    // ışın: parlak hale + çekirdek + hızla akan ışık
-    out += `<path class="br" d="${d1}" stroke="${c}" stroke-width="${wide ? 22 : 14}" stroke-opacity=".12" filter="url(#glow)"/>`
-         + `<path class="br" d="${d1}" stroke="${c}" stroke-width="${wide ? 7 : 5}" stroke-opacity=".9"/><path class="br-flow" d="${d1}"/>`
-         + `<path class="beam" d="${d1}" pathLength="100"/>`;
+    // organik dal: gövdeden kalın çıkıp incelen, yapraklı, çiçekli
+    out += `<path class="br" d="${d1}" stroke="${c}" stroke-width="${wide ? 20 : 12}" stroke-opacity=".10" filter="url(#glow)"/>`
+         + `<path class="limb" d="${taper(P1, wide ? 20 : 12, wide ? 6 : 4)}" fill="${c}"/><path class="br-flow" d="${d1}"/>`
+         + `<path class="beam" d="${d1}" pathLength="100"/>`
+         + leafAt(P1, .38, left ? 1 : -1, '#22C55E', .85) + leafAt(P1, .62, left ? -1 : 1, '#16A34A', .75)
+         + (wide ? flower(...cub(P1, .5), c, 5) : '');
     // bölümden dışarı uzanan çıkış hattı (iç sayfada soldan gelen dalın kaynağı)
     if (wide) {
       const G = R(g), ex = left ? -60 : T.width + 60, yb = G.b + 12, sx = n.cx;
-      const dx = `M${sx} ${n.b - 2} V${yb - 14} Q${sx} ${yb} ${sx + (left ? -14 : 14)} ${yb} H${ex}`;
+      const rr = Math.min(70, Math.max(20, yb - n.b - 4)), dx = `M${sx} ${n.b - 2} C${sx} ${yb - rr * .1}, ${sx + (left ? -rr * .2 : rr * .2)} ${yb}, ${sx + (left ? -rr * 1.2 : rr * 1.2)} ${yb} H${ex}`;
       out += `<path class="br exit" d="${dx}" stroke="${c}" stroke-width="3" stroke-opacity=".7"/><path class="exit-flow" d="${dx}" stroke="${c}"/>`
            + `<path class="beam thin" d="${dx}" pathLength="100"/>`;
     }
@@ -1327,6 +1352,7 @@ function drawTree() {
       const d = wide ? (left ? curve(P.l + 4, P.cy, Q.r - 4, Q.cy) : curve(P.r - 4, P.cy, Q.l + 4, Q.cy))
                      : `M${P.cx} ${P.b - 2} C${P.cx} ${(P.b + Q.t) / 2}, ${Q.cx} ${(P.b + Q.t) / 2}, ${Q.cx} ${Q.t + 2}`;
       out += `<path class="br" d="${d}" stroke="${c}" stroke-width="${w}" stroke-opacity="${o}"/>`;
+      if (w < 3) out += `<circle cx="${(left ? Q.r - 4 : Q.l + 4)}" cy="${Q.cy}" r="3.2" fill="${c}" opacity=".7"/>`;
     };
     const subs = g.querySelectorAll('.sub');
     if (subs.length) subs.forEach(sb => {
