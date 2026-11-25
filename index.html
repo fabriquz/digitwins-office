@@ -705,6 +705,19 @@ svg.ph-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:non
 @media(min-width:700px){.tree-wrap .tree .root{width:208px;height:208px;border-radius:50%;justify-content:center;padding:0;gap:12px}
 .tree-wrap .tree .root .root-core{width:72px;height:72px;padding:13px}}
 @media (prefers-reduced-motion:reduce){.bloom{animation:none}}
+
+/* Sayfa okları */
+.pnav-top{margin:0 0 6px}
+.pn-back{display:inline-flex;align-items:center;gap:8px;padding:7px 16px 7px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--muted);transition:all .15s}
+.pn-back:hover{color:var(--brand);border-color:var(--brand);transform:translateX(-2px)}
+.pn-l{display:inline-grid;transform:rotate(180deg)}
+.pnav-bar{display:flex;justify-content:space-between;gap:14px;margin-top:36px;padding-top:22px;border-top:1px dashed var(--line)}
+.pn-btn{display:inline-flex;align-items:center;gap:12px;padding:12px 18px;border-radius:18px;background:#fff;border:1px solid var(--line);color:var(--brand);text-align:left;max-width:48%;transition:all .18s}
+.pn-btn.nx{text-align:right;margin-left:auto}
+.pn-btn small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.pn-btn b{display:block;font-size:14px;font-weight:700;color:var(--ink);line-height:1.25}
+.pn-btn:hover{border-color:var(--brand);box-shadow:0 10px 22px -14px var(--brand);transform:translateY(-2px)}
+@media(max-width:600px){.pnav-bar{flex-direction:column}.pn-btn{max-width:100%}.pn-btn.nx{margin-left:0;justify-content:space-between}}
 </style>
 </head>
 <body>
@@ -1048,8 +1061,9 @@ let demoTopics = [];
 function t(obj) { return !obj ? '' : (typeof obj === 'string' ? obj : (obj[state.lang] || obj.tr || '')); }
 function cv(div) { return `--c:${div.hex};--soft:${div.soft}`; }
 function setLang(lang) { state.lang = lang; renderApp(); }
-function navigate(route) {
+function navigate(route, fromPop) {
   state.route = route; state.mobileMenuOpen = false;
+  if (!fromPop) { try { history.pushState({ r: route }, '', '#' + route); } catch (e) {} }
   document.getElementById('mobile-menu').classList.remove('open');
   window.scrollTo({ top: 0, behavior: 'smooth' }); renderApp();
 }
@@ -1747,7 +1761,36 @@ function renderApp() {
   requestAnimationFrame(() => { drawMaps(); drawSpine(); });
   setTimeout(twinApply, 60);
   window.scrollTo(0, 0);
+  addPageNav();
 }
+
+// Geri / Önceki-Sonraki okları
+const NAV_L = { tr: ['Geri', 'Önceki', 'Sonraki'], uz: ['Orqaga', 'Oldingi', 'Keyingi'], ru: ['Назад', 'Предыдущая', 'Следующая'], en: ['Back', 'Previous', 'Next'] };
+function pageSeq() {
+  const r = state.route, pg = PAGES.find(p => p.id === r);
+  if (pg) return PAGES.filter(p => p.division === pg.division && !p.layer).map(p => ({ id: p.id, label: t(p.title) }));
+  const top = ['hakkimizda', 'platformlar', 'akademi', 'danismanlik', 'etkinlikler', 'iletisim'];
+  if (top.includes(r)) return top.map(id => ({ id, label: id === 'hakkimizda' ? I18N[state.lang].nav.about : id === 'iletisim' ? I18N[state.lang].nav.contact : t(DIVISIONS[id].title) }));
+  return [];
+}
+function goBack() { if (history.state && history.state.r && history.length > 1) history.back(); else navigate(PAGES.find(p => p.id === state.route) ? PAGES.find(p => p.id === state.route).division : 'home'); }
+function addPageNav() {
+  const root = document.querySelector('#app-root .page'); if (!root || state.route === 'home') return;
+  const L = NAV_L[state.lang], seq = pageSeq(), i = seq.findIndex(x => x.id === state.route);
+  const ar = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+  const top = document.createElement('div'); top.className = 'pnav-top';
+  top.innerHTML = `<button class="pn-back" onclick="goBack()"><span class="pn-l">${ar}</span>${L[0]}</button>`;
+  root.insertBefore(top, root.firstChild);
+  if (i < 0 || seq.length < 2) return;
+  const pv = seq[(i + seq.length - 1) % seq.length], nx = seq[(i + 1) % seq.length];
+  const bar = document.createElement('div'); bar.className = 'pnav-bar';
+  bar.innerHTML = `<button class="pn-btn" onclick="navigate('${pv.id}')"><span class="pn-l">${ar}</span><span><small>${L[1]}</small><b>${pv.label}</b></span></button>`
+    + `<button class="pn-btn nx" onclick="navigate('${nx.id}')"><span><small>${L[2]}</small><b>${nx.label}</b></span>${ar}</button>`;
+  root.appendChild(bar);
+}
+window.addEventListener('popstate', e => { const r = (e.state && e.state.r) || location.hash.replace('#', '') || 'home'; navigate(r, true); });
+(() => { const r = location.hash.replace('#', ''); if (r && (r === 'hakkimizda' || r === 'iletisim' || r === 'gundem' || DIVISIONS[r] || PAGES.find(p => p.id === r))) state.route = r;
+  try { history.replaceState({ r: state.route }, '', '#' + state.route); } catch (e) {} })();
 
 renderApp();
 </script>
