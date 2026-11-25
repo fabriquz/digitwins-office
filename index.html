@@ -895,16 +895,21 @@ footer.site{background:linear-gradient(180deg,#fff,#F3F8FA);border-top:1px solid
 @media(max-width:640px){.nw-grid{grid-template-columns:1fr!important}.nw-card .nw-img,.nw-feat .nw-img{width:80px;height:80px}.ag-list{grid-template-columns:1fr}.nw-feat{flex-direction:row!important}}
 .ag-list{grid-template-columns:1fr!important}
 
-.ag-ticker{grid-column:1/-1;position:relative;overflow:hidden;margin:2px -4px -4px;padding:8px 0;border-top:1px dashed color-mix(in srgb,var(--c) 30%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
-.tk-track{display:flex;width:max-content;animation:tkflow 90s linear infinite}
-.ag-ticker:hover .tk-track{animation-play-state:paused}
-.tk-i{display:inline-flex;align-items:center;gap:9px;padding:0 22px 0 0;font-size:13.5px;font-weight:600;color:var(--ink-2);white-space:nowrap;position:relative;margin-right:22px}
-.tk-i::after{content:"";position:absolute;right:0;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:var(--c);opacity:.5}
-.tk-i i{font-style:normal;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--soft);color:var(--c)}
-.tk-i:hover{color:var(--c)}
-@keyframes tkflow{to{transform:translateX(-50%)}}
-@media(max-width:600px){.tk-track{animation-duration:60s}.tk-i{font-size:12.5px}}
-@media(prefers-reduced-motion:reduce){.tk-track{animation:none}.ag-ticker{overflow-x:auto}}
+.ag-leaves{justify-items:stretch!important}
+.ag-box{display:flex;align-items:center;gap:6px;min-width:0;background:var(--soft);border-radius:999px;padding:4px 14px 4px 4px;border:1.5px solid color-mix(in srgb,var(--c) 22%,transparent)}
+.ab-h{flex:none;display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:#fff;font-weight:800;font-size:14px;color:var(--c);box-shadow:0 2px 6px -3px var(--c)}
+.ab-h small{font-family:var(--mono);font-size:10.5px;background:var(--soft);padding:1px 7px;border-radius:999px}
+.ab-lf{width:12px;height:12px;border-radius:50% 0 50% 0;background:var(--c)}
+.ab-tk{flex:1;min-width:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.ab-track{display:flex;width:max-content;animation:abflow 70s linear infinite}
+.ag-box:hover .ab-track{animation-play-state:paused}
+.ab-i{white-space:nowrap;font-size:13px;font-weight:600;color:var(--ink-2);padding:6px 26px 6px 8px;position:relative}
+.ab-i::after{content:"";position:absolute;right:10px;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:var(--c);opacity:.5}
+.ab-i:hover{color:var(--c)}
+@keyframes abflow{to{transform:translateX(-50%)}}
+@media(max-width:600px){.ab-track{animation-duration:50s}.ab-h{padding:6px 10px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){.ab-track{animation:none}.ab-tk{overflow-x:auto}}
+@media(min-width:860px){.agmap{gap:14px 36px!important}.ag-leaves{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -1394,18 +1399,16 @@ function renderHome() {
   </section>`;
   const agenda = (() => { const a = AG[state.lang], x = ANNOUNCEMENTS[0], nw = NEWS[0]; const pg = x && PAGES.find(p => p.id === x.page);
     const meg = S('<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>', 'ico');
-    const leaves = [leafLink({ label: a.ann, click: "agendaTab='ann';navigate('gundem')", style: '--c:#059669;--soft:#D1FAE5' }),
-      leafLink({ label: a.news, click: "agendaTab='news';navigate('gundem')", style: '--c:#1D4ED8;--soft:#DBEAFE' })];
+    const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    const box = (lab, tab, c, s, list) => { const one = list.map(x => `<button class="ab-i" onclick="${x.go}">${esc(x.tx)}</button>`).join('');
+      return `<div class="ag-box" style="--c:${c};--soft:${s}"><button class="ab-h" onclick="agendaTab='${tab}';navigate('gundem')"><span class="ab-lf"></span>${lab}<small>${list.length}</small></button><div class="ab-tk"><div class="ab-track">${one}${one}</div></div></div>`; };
+    const leaves = [box(a.ann, 'ann', '#059669', '#D1FAE5', ANNOUNCEMENTS.map(x => { const p = PAGES.find(q => q.id === x.page); return p && { go: `navigate('${p.id}')`, tx: t(p.title) }; }).filter(Boolean)),
+      box(a.news, 'news', '#1D4ED8', '#DBEAFE', NEWS.slice().sort((x, y) => y.date.localeCompare(x.date)).slice(0, 10).map(n => ({ go: `navigate('haber-${n.id}')`, tx: n.t[state.lang] })))];
     const wait = '';
     return `<section class="agmap" data-map="h" style="--c:#007397;--soft:#DDF1F7"><svg class="ph-lines" aria-hidden="true"></svg>
       <button class="ph-node ag-node" data-src onclick="agendaTab='ann';navigate('gundem')"><span class="ph-ic">${meg}</span><span><span class="s" style="margin:0 0 4px"><span class="dot live"></span> LIVE</span><b>${dict.nav.agenda}</b></span></button>
       <div class="ag-leaves">${leaves.join('')}${wait}</div>
       <button class="ag-all" onclick="agendaTab='ann';navigate('gundem')">${dict.viewAll} ${ARROW}</button>
-      ${(() => { const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
-        const it = [...ANNOUNCEMENTS.map(x => { const p = PAGES.find(q => q.id === x.page); return p && { k: a.strip, c: '#059669', s: '#D1FAE5', go: `navigate('${p.id}')`, tx: t(p.title) }; }).filter(Boolean),
-          ...NEWS.slice().sort((x, y) => y.date.localeCompare(x.date)).slice(0, 10).map(n => ({ k: a.news.replace(/lar$|ler$/, m => ''), c: '#1D4ED8', s: '#DBEAFE', go: `navigate('haber-${n.id}')`, tx: n.t[state.lang] }))];
-        const one = it.map(x => `<button class="tk-i" style="--c:${x.c};--soft:${x.s}" onclick="${x.go}"><i>${esc(x.k)}</i><span>${esc(x.tx)}</span></button>`).join('');
-        return `<div class="ag-ticker" aria-label="${esc(a.badge)}"><div class="tk-track">${one}${one}</div></div>`; })()}
     </section>`; })();
 
 
