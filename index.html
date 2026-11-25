@@ -910,6 +910,7 @@ footer.site{background:linear-gradient(180deg,#fff,#F3F8FA);border-top:1px solid
 @media(max-width:600px){.ab-track{animation-duration:50s}.ab-h{padding:6px 10px;font-size:13px}}
 @media(prefers-reduced-motion:reduce){.ab-track{animation:none}.ab-tk{overflow-x:auto}}
 @media(min-width:860px){.agmap{gap:14px 36px!important}.ag-leaves{grid-template-columns:1fr 1fr}}
+@media(min-width:860px){.agmap{grid-template-columns:auto 1fr!important}.ag-leaves{gap:14px}}
 </style>
 </head>
 <body>
@@ -1408,7 +1409,6 @@ function renderHome() {
     return `<section class="agmap" data-map="h" style="--c:#007397;--soft:#DDF1F7"><svg class="ph-lines" aria-hidden="true"></svg>
       <button class="ph-node ag-node" data-src onclick="agendaTab='ann';navigate('gundem')"><span class="ph-ic">${meg}</span><span><span class="s" style="margin:0 0 4px"><span class="dot live"></span> LIVE</span><b>${dict.nav.agenda}</b></span></button>
       <div class="ag-leaves">${leaves.join('')}${wait}</div>
-      <button class="ag-all" onclick="agendaTab='ann';navigate('gundem')">${dict.viewAll} ${ARROW}</button>
     </section>`; })();
 
 
