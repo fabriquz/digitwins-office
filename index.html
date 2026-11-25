@@ -227,7 +227,7 @@ html body .big-i{width:56px!important;height:56px!important;margin:6px 0 16px 6p
 @media(prefers-reduced-motion:reduce){.tw3 *{animation:none!important}}
 
 /* Ana sayfa Gündem: canlı dal, her yeni duyuru/haber yeni yaprak olarak bağlanır */
-.agmap{position:relative;display:grid;gap:14px 70px;align-items:center;margin:-36px 0 48px;padding:18px 22px;border-radius:22px;background:radial-gradient(500px 200px at 0% 50%,#E0F2FE,transparent 65%),#FBFDFE;border:1px solid var(--line)}.tw3 .agmap > *:not(svg){position:relative;z-index:1}.tw3 .ag-node{justify-self:start;padding:8px 18px 8px 8px!important}.tw3 .ag-node .ph-ic{width:40px;height:40px}.tw3 .ag-node .ph-ic .ico{width:20px;height:20px}.tw3 .ag-node b{display:block;font-family:var(--display);font-size:18px;font-weight:800;color:#fff;line-height:1}.tw3 .ag-node .s{display:inline-flex!important;align-items:center;gap:6px}.tw3 .ag-leaves{display:grid;gap:8px;justify-items:start}.tw3 .ag-leaves .leaf{max-width:100%}.tw3 .ag-leaves .leaf .lt{display:inline-flex;align-items:baseline;gap:6px;flex-wrap:wrap}.tw3 .ag-wait{border-style:dashed!important;border-color:color-mix(in srgb,var(--c) 45%,transparent)!important;background:#fff!important;opacity:.85}.tw3 .ag-all{justify-self:start;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--brand)}.tw3 .agmap svg.ph-lines path.br{stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 1.4s ease-out forwards}
+.agmap{position:relative;display:grid;gap:14px 70px;align-items:center;margin:-36px 0 48px;padding:18px 22px;border-radius:22px;background:radial-gradient(500px 200px at 0% 50%,#E0F2FE,transparent 65%),#FBFDFE;border:1px solid var(--line)}.agmap > *:not(svg){position:relative;z-index:1}.ag-node{justify-self:start;padding:8px 18px 8px 8px!important}.ag-node .ph-ic{width:40px;height:40px}.ag-node .ph-ic .ico{width:20px;height:20px}.ag-node b{display:block;font-family:var(--display);font-size:18px;font-weight:800;color:#fff;line-height:1}.ag-node .s{display:inline-flex!important;align-items:center;gap:6px}.ag-leaves{display:grid;gap:8px;justify-items:start}.ag-leaves .leaf{max-width:100%}.ag-leaves .leaf .lt{display:inline-flex;align-items:baseline;gap:6px;flex-wrap:wrap}.ag-wait{border-style:dashed!important;border-color:color-mix(in srgb,var(--c) 45%,transparent)!important;background:#fff!important;opacity:.85}.ag-all{justify-self:start;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--brand)}.agmap svg.ph-lines path.br{stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 1.4s ease-out forwards}
 @media(min-width:860px){.agmap{grid-template-columns:auto 1fr auto}.ag-all{justify-self:end}}
 @media(max-width:859px){.ag-leaves{padding-left:34px}}
 
@@ -718,6 +718,19 @@ svg.ph-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:non
 .pn-btn b{display:block;font-size:14px;font-weight:700;color:var(--ink);line-height:1.25}
 .pn-btn:hover{border-color:var(--brand);box-shadow:0 10px 22px -14px var(--brand);transform:translateY(-2px)}
 @media(max-width:600px){.pnav-bar{flex-direction:column}.pn-btn{max-width:100%}.pn-btn.nx{margin-left:0;justify-content:space-between}}
+
+/* Ana sayfa yazıları biraz büyük */
+.hero .eyebrow,.sec-head .eyebrow,.partners .pt-k,.agmap .ag-node .s{font-size:13px}
+.hero h1{font-size:clamp(38px,5.6vw,64px)}
+.hero p.lead{font-size:19px;max-width:560px}
+.sec-head h2{font-size:clamp(30px,3.8vw,44px)}
+.sec-head p{font-size:17px}
+.tree-wrap .tree .bnode b{font-size:18px}.tree-wrap .tree .bnode small{font-size:11.5px}
+.tree-wrap .tree .leaf{font-size:14.5px}
+.tree-wrap .tree .snode{font-size:12.5px}
+.topics .tchip{font-size:14px}
+.agmap .ag-node b{font-size:20px}
+.pt-chip b{font-size:18px}.pt-chip small{font-size:11px}
 </style>
 </head>
 <body>
@@ -1214,7 +1227,6 @@ function renderHome() {
       <p class="lead">${dict.heroDesc}</p>
       <div class="actions">
         <a href="#bolumler" class="btn btn-primary">${dict.exploreBtn} ${S('<path d="M12 5v14M6 13l6 6 6-6"/>', 'ico-sm')}</a>
-        <button class="btn btn-ghost" onclick="openDemoModal(${demoRef(dict.heroSlogan)})"><span class="dot"></span>${dict.demoBtn}</button>
       </div>
     </div>
     <div>${renderDigitalTwinVisual()}</div>
