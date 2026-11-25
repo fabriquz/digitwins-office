@@ -1241,9 +1241,8 @@ function renderHome() {
   </section>
   ${(() => { const a = AG[state.lang], x = ANNOUNCEMENTS[0], nw = NEWS[0]; const pg = x && PAGES.find(p => p.id === x.page);
     const meg = S('<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>', 'ico');
-    const leaves = ANNOUNCEMENTS.map(x => { const pg = PAGES.find(p => p.id === x.page), dv = DIVISIONS[pg.division];
-        return leafLink({ label: t(pg.title), small: x.date ? `${a.strip} · ${x.date}` : a.strip, click: `navigate('${pg.id}')`, style: cv(dv) }); })
-      .concat(NEWS.slice(0, 3).map(n => leafLink({ label: n.title, small: `${a.news} · ${n.source}`, click: `window.open('${n.url}','_blank')`, style: '--c:#1D4ED8;--soft:#DBEAFE' })));
+    const leaves = [leafLink({ label: a.ann, click: "agendaTab='ann';navigate('gundem')", style: '--c:#059669;--soft:#D1FAE5' }),
+      leafLink({ label: a.news, click: "agendaTab='news';navigate('gundem')", style: '--c:#1D4ED8;--soft:#DBEAFE' })];
     const wait = '';
     return `<section class="agmap" data-map="h" style="--c:#007397;--soft:#DDF1F7"><svg class="ph-lines" aria-hidden="true"></svg>
       <button class="ph-node ag-node" data-src onclick="agendaTab='ann';navigate('gundem')"><span class="ph-ic">${meg}</span><span><span class="s" style="margin:0 0 4px"><span class="dot live"></span> LIVE</span><b>${dict.nav.agenda}</b></span></button>
@@ -1681,10 +1680,10 @@ const NEWS = [
   // { title: 'Haber başlığı', source: 'Kaynak adı', url: 'https://...', date: '2026-11-24' }
 ];
 const AG = {
-  tr: { badge: 'GÜNDEM', ann: 'Duyurular', news: 'Haberler', soon: 'Tarih yakında açıklanacak', newsEmpty: 'Türkiye’den sanayi bölgesi, yatırım ve akıllı fabrika haberleri burada yayınlanacak.', detail: 'Detay', strip: 'Duyuru', newsSoon: 'Türkiye’den sektör haberleri yakında' },
-  uz: { badge: 'KUN TARTIBI', ann: 'E’lonlar', news: 'Yangiliklar', soon: 'Sana tez orada e’lon qilinadi', newsEmpty: 'Turkiyadan sanoat zonalari, investitsiya va aqlli zavod yangiliklari shu yerda e’lon qilinadi.', detail: 'Batafsil', strip: 'E’lon', newsSoon: 'Turkiyadan soha yangiliklari tez orada' },
-  ru: { badge: 'ПОВЕСТКА', ann: 'Анонсы', news: 'Новости', soon: 'Дата будет объявлена', newsEmpty: 'Здесь будут публиковаться новости из Турции о промзонах, инвестициях и умных заводах.', detail: 'Подробнее', strip: 'Анонс', newsSoon: 'Отраслевые новости из Турции скоро' },
-  en: { badge: 'AGENDA', ann: 'Announcements', news: 'News', soon: 'Date to be announced', newsEmpty: 'News from Turkey on industrial zones, investment and smart factories will be published here.', detail: 'Details', strip: 'Announcement', newsSoon: 'Industry news from Turkey coming soon' }
+  tr: { empty: 'Henüz haber bulunmuyor', badge: 'GÜNDEM', ann: 'Duyurular', news: 'Haberler', detail: 'Detay', strip: 'Duyuru' },
+  uz: { empty: 'Hozircha yangiliklar yo‘q', badge: 'KUN TARTIBI', ann: 'E’lonlar', news: 'Yangiliklar', detail: 'Batafsil', strip: 'E’lon' },
+  ru: { empty: 'Новостей пока нет', badge: 'ПОВЕСТКА', ann: 'Анонсы', news: 'Новости', detail: 'Подробнее', strip: 'Анонс' },
+  en: { empty: 'No news yet', badge: 'AGENDA', ann: 'Announcements', news: 'News', detail: 'Details', strip: 'Announcement' }
 };
 let agendaTab = 'ann';
 function setAgendaTab(tb) { agendaTab = tb; renderApp(); }
@@ -1702,9 +1701,8 @@ function renderAgendaPage() {
   const news = NEWS.length ? NEWS.map(n => `<a class="card ag-item" data-hook href="${n.url}" target="_blank" rel="noopener" style="--c:#007397;--soft:#DDF1F7">
       <span class="ag-date">${S('<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>', 'ico')}<b>${n.date || ''}</b></span>
       <span class="ag-body"><span class="tag">${n.source}</span><h3>${n.title}</h3></span><span class="ag-go">${ARROW}</span></a>`).join('')
-    : `<div class="ag-empty" data-hook>${S('<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>', 'ico')}<p>${a.newsEmpty}</p></div>`;
-  if (!NEWS.length) agendaTab = 'ann';
-  const right = [['ann', a.ann, ANNOUNCEMENTS.length]].concat(NEWS.length ? [['news', a.news, NEWS.length]] : []).map(([id, lab, n]) =>
+    : `<div class="ag-empty" data-hook>${S('<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>', 'ico')}<p>${a.empty}</p></div>`;
+  const right = [['ann', a.ann, ANNOUNCEMENTS.length], ['news', a.news, NEWS.length]].map(([id, lab, n]) =>
     leafLink({ label: lab, small: String(n), click: `setAgendaTab('${id}')`, on: agendaTab === id })).join('');
   return `<div class="dmap" style="--c:#007397;--soft:#DDF1F7"><svg class="spine" aria-hidden="true"></svg>
   ${crumb([{ label: dict.nav.agenda }])}
