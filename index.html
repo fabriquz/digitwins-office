@@ -979,7 +979,7 @@ select:focus{outline:none;border-color:var(--brand-2);box-shadow:0 0 0 3px rgba(
           <button class="ld-btn" onclick="toggleLang(event)" aria-haspopup="true"><span id="ld-cur"></span><svg class="ico-xs ld-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button>
           <div class="ld-menu" id="ld-menu"></div>
         </div>
-        <button class="btn btn-primary btn-sm hide-sm" onclick="openDemoModal()"><span id="nav-demo-text">Demo talep et</span></button>
+        
         <button class="burger" onclick="toggleMobileMenu()" aria-label="Menü">
           <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
@@ -2167,9 +2167,8 @@ function renderApp() {
   const activeId = activePage ? activePage.division : state.route;
   const links = navItems.map(i => `<button class="nav-link ${activeId === i.id ? 'active' : ''}" style="${DIVISIONS[i.id] ? '--c:' + DIVISIONS[i.id].hex : ''}" onclick="navigate('${i.id}')">${i.label}</button>`).join('');
   document.getElementById('desktop-nav').innerHTML = links;
-  document.getElementById('mobile-menu').innerHTML = links + `<button class="btn btn-primary" onclick="openDemoModal()">${dict.demoBtn}</button>`;
+  document.getElementById('mobile-menu').innerHTML = links;
   renderLang();
-  document.getElementById('nav-demo-text').textContent = dict.demoBtn;
   renderFooter(dict);
   document.getElementById('modal-title').textContent = dict.modalTitle;
   document.getElementById('modal-sub').textContent = dict.modalSub;
