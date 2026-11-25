@@ -932,6 +932,28 @@ footer.site{background:linear-gradient(180deg,#fff,#F3F8FA);border-top:1px solid
 .ph-txt p{margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2)}
 .ph-txt p.lead{font-size:16px;font-weight:600;color:var(--ink)}
 @media(max-width:859px){.ph-r:has(.ph-txt){padding-left:0}}
+
+.dm-grid{display:grid;gap:14px;align-items:start}
+@media(min-width:860px){.dm-grid{grid-template-columns:1.35fr 1fr}}
+.dm-form{padding:20px 22px;display:grid;gap:12px}
+select{width:100%;font:inherit;font-size:14px;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink)}
+select:focus{outline:none;border-color:var(--brand-2);box-shadow:0 0 0 3px rgba(2,132,199,.15)}
+.dm-note{margin:0;font-size:12.5px;color:var(--muted)}
+.dm-side{padding:18px 20px;display:grid;gap:10px}
+.dm-ch{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:color-mix(in srgb,var(--c) 8%,#fff);border:1px solid color-mix(in srgb,var(--c) 25%,transparent);color:var(--c);transition:transform .15s}
+.dm-ch:hover{transform:translateX(3px)}
+.dm-ch > span:nth-child(2){flex:1;min-width:0}
+.dm-ch b{display:block;font-size:14.5px;color:var(--ink)}
+.dm-ch small{display:block;font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dm-ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--c);color:#fff}
+.dm-ic .ico{width:18px;height:18px}
+.fch{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.fch a{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--c);background:color-mix(in srgb,var(--c) 9%,#fff);border:1px solid color-mix(in srgb,var(--c) 25%,transparent)}
+.home-demo{margin:0 0 40px}
+.home-demo .sec-head{margin-bottom:14px}
+.home-demo .sec-head h2{font-size:clamp(24px,2.8vw,32px)!important;margin-top:6px}
+.home-demo .sec-head p{font-size:15px!important;max-width:70ch}
+.partners + .agmap{margin-bottom:0!important}
 </style>
 </head>
 <body>
@@ -1277,11 +1299,10 @@ function toggleMobileMenu() {
 }
 // Demo konusu, tırnak sorunlarını önlemek için indeksle aktarılır
 function demoRef(text) { demoTopics.push(text); return demoTopics.length - 1; }
-function openDemoModal(ref) {
-  const fb = document.getElementById('demo-feedback'); fb.style.display = 'none';
-  document.getElementById('demo-topic-input').value = (typeof ref === 'number' ? demoTopics[ref] : ref) || 'DigiTwins Dijital İkiz';
-  document.getElementById('demo-modal').classList.add('open');
-}
+// ---- İletişim kanalları: adresleri buraya yaz. Boş bırakılan kanal sitede gizli kalır. ----
+const CONTACT = { EMAIL: 'info@digitwins.uz', PHONE: '+998902777366', PHONE_LABEL: '+998 90 277 73 66', TELEGRAM_URL: 'https://t.me/+998902777366', WHATSAPP_URL: 'https://wa.me/998902777366' };
+let demoPreset = '';
+function openDemoModal(ref) { demoPreset = (typeof ref === 'number' ? demoTopics[ref] : ref) || ''; navigate('demo'); window.scrollTo(0, 0); }
 function closeDemoModal() { document.getElementById('demo-modal').classList.remove('open'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDemoModal(); });
 function submitDemo(e) {
@@ -1493,7 +1514,8 @@ function renderHome() {
     const set = [...P, ...P, ...P].map(cell).join('');
     return `<section class="partners"><span class="pt-k"><span class="dot live"></span>${L[0]}</span>
       <div class="pt-stream"><div class="pt-track">${set}${set}</div></div></section>`; })()}
-  ${agenda}`;
+  ${agenda}
+  <section class="home-demo" id="demo-home"><div class="sec-head"><div><span class="eyebrow">${DEMO_L[state.lang].eyebrow}</span><h2>${DEMO_L[state.lang].title}</h2><p>${DEMO_L[state.lang].sub}</p></div></div>${demoBlock()}</section>`;
 }
 
 // Aynı konu hattındaki yaprakları vurgular (tıkla: sabitle, üzerine gel: önizle)
@@ -2059,6 +2081,56 @@ function renderNewsDetail(id) {
 }
 
 // --- İLETİŞİM ---
+
+const DEMO_L = {
+  tr: { eyebrow: 'CANLI DEMO', title: 'Demo talep et', sub: 'Sanayi bölgeniz veya fabrikanız için canlı demo planlayın. Formu doldurun, e-posta uygulamanız hazır bir mesajla açılsın.', name: 'Ad Soyad', org: 'Firma / Kurum', contact: 'Telefon veya e-posta', topic: 'İlgilendiğiniz çözüm', send: 'Talebi hazırla ve gönder', note: 'Gönder düğmesi, info@digitwins.uz adresine hazır doldurulmuş bir e-posta açar.', ch: 'Bize ulaşın', chSub: 'Dilediğiniz kanaldan yazın.', mail: 'E-posta', tg: 'Telegram', wa: 'WhatsApp', tel: 'Telefon', topics: ['Platformlar', 'Akademi', 'Danışmanlık', 'Zirve', 'GreenCarbonAI'], subj: 'Demo talebi', fName: 'Ad Soyad', fOrg: 'Firma', fCon: 'Telefon / E-posta', fTop: 'Çözüm' },
+  en: { eyebrow: 'LIVE DEMO', title: 'Request a demo', sub: 'Plan a live demo for your industrial zone or factory. Fill in the form and your email app will open with a ready message.', name: 'Full name', org: 'Company / Organisation', contact: 'Phone or email', topic: 'Solution of interest', send: 'Prepare and send request', note: 'The send button opens a pre-filled email to info@digitwins.uz.', ch: 'Contact us', chSub: 'Write to us on any channel.', mail: 'Email', tg: 'Telegram', wa: 'WhatsApp', tel: 'Phone', topics: ['Platforms', 'Academy', 'Consulting', 'Summit', 'GreenCarbonAI'], subj: 'Demo request', fName: 'Full name', fOrg: 'Company', fCon: 'Phone / Email', fTop: 'Solution' },
+  ru: { eyebrow: 'ЖИВОЕ ДЕМО', title: 'Запросить демо', sub: 'Запланируйте демо для вашей промзоны или завода. Заполните форму, и почтовое приложение откроется с готовым письмом.', name: 'Имя и фамилия', org: 'Компания / организация', contact: 'Телефон или e-mail', topic: 'Интересующее решение', send: 'Подготовить и отправить', note: 'Кнопка откроет готовое письмо на адрес info@digitwins.uz.', ch: 'Свяжитесь с нами', chSub: 'Напишите нам любым удобным способом.', mail: 'E-mail', tg: 'Telegram', wa: 'WhatsApp', tel: 'Телефон', topics: ['Платформы', 'Академия', 'Консалтинг', 'Саммит', 'GreenCarbonAI'], subj: 'Запрос демо', fName: 'Имя', fOrg: 'Компания', fCon: 'Телефон / e-mail', fTop: 'Решение' },
+  uz: { eyebrow: 'JONLI DEMO', title: 'Demo so‘rash', sub: 'Sanoat zonangiz yoki zavodingiz uchun jonli demo rejalashtiring. Shaklni to‘ldiring, pochta ilovangiz tayyor xat bilan ochiladi.', name: 'Ism familiya', org: 'Kompaniya / tashkilot', contact: 'Telefon yoki email', topic: 'Qiziqqan yechim', send: 'So‘rovni tayyorlash va yuborish', note: 'Tugma info@digitwins.uz manziliga tayyor xat ochadi.', ch: 'Bog‘lanish', chSub: 'Istalgan kanal orqali yozing.', mail: 'Email', tg: 'Telegram', wa: 'WhatsApp', tel: 'Telefon', topics: ['Platformalar', 'Akademiya', 'Konsalting', 'Sammit', 'GreenCarbonAI'], subj: 'Demo so‘rovi', fName: 'Ism', fOrg: 'Kompaniya', fCon: 'Telefon / Email', fTop: 'Yechim' }
+};
+const CH_ICO = { tel: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/>', mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>', tg: '<path d="M21 3 3 10.5l6 2.5 2.5 6L21 3Z"/><path d="M9 13l5-4"/>', wa: '<path d="M21 12a9 9 0 1 1-3.4-7L21 3l-1.2 4.2A9 9 0 0 1 21 12Z"/><path d="M9 9c0 3 3 6 6 6l1-2-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2-2 .5Z"/>' };
+const CH_COL = { tel: '#EA580C', mail: '#007397', tg: '#1D4ED8', wa: '#059669' };
+// Boş adresli kanallar listeye girmez
+function contactChannels() {
+  const L = DEMO_L[state.lang], out = [{ k: 'mail', label: L.mail, val: CONTACT.EMAIL, href: 'mailto:' + CONTACT.EMAIL }];
+  if (CONTACT.PHONE) out.unshift({ k: 'tel', label: L.tel, val: CONTACT.PHONE_LABEL, href: 'tel:' + CONTACT.PHONE });
+  if (CONTACT.TELEGRAM_URL) out.push({ k: 'tg', label: L.tg, val: CONTACT.PHONE_LABEL, href: CONTACT.TELEGRAM_URL });
+  if (CONTACT.WHATSAPP_URL) out.push({ k: 'wa', label: L.wa, val: CONTACT.PHONE_LABEL, href: CONTACT.WHATSAPP_URL });
+  return out;
+}
+function submitDemoPage(e) {
+  e.preventDefault();
+  const f = e.target, v = n => f.elements[n].value.trim(), L = DEMO_L[state.lang];
+  const body = `${L.fName}: ${v('name')}\n${L.fOrg}: ${v('org')}\n${L.fCon}: ${v('contact')}\n${L.fTop}: ${v('topic')}`;
+  location.href = `mailto:${CONTACT.EMAIL}?subject=${encodeURIComponent(L.subj + ': ' + v('topic'))}&body=${encodeURIComponent(body)}`;
+}
+function demoBlock() {
+  const L = DEMO_L[state.lang];
+  const opts = L.topics.slice(); if (demoPreset && !opts.includes(demoPreset)) opts.unshift(demoPreset);
+  const sel = demoPreset || opts[0];
+  const ch = contactChannels().map(c => `<a class="dm-ch" style="--c:${CH_COL[c.k]}" href="${c.href}" ${(c.k === 'mail' || c.k === 'tel') ? '' : 'target="_blank" rel="noopener"'}><span class="dm-ic">${S(CH_ICO[c.k], 'ico')}</span><span><b>${c.label}</b><small>${c.val}</small></span>${ARROW}</a>`).join('');
+  return `<div class="dm-grid">
+      <form class="card dm-form" onsubmit="submitDemoPage(event)">
+        <div class="f2"><div><label for="d-name">${L.name}</label><input id="d-name" name="name" required type="text" autocomplete="name"></div>
+        <div><label for="d-org">${L.org}</label><input id="d-org" name="org" required type="text" autocomplete="organization"></div></div>
+        <div><label for="d-con">${L.contact}</label><input id="d-con" name="contact" required type="text" autocomplete="email"></div>
+        <div><label for="d-top">${L.topic}</label><select id="d-top" name="topic">${opts.map(o => `<option ${o === sel ? 'selected' : ''}>${o}</option>`).join('')}</select></div>
+        <button type="submit" class="btn btn-primary"><span class="dot live"></span>${L.send}</button>
+        <p class="dm-note">${L.note}</p>
+      </form>
+      <aside class="card dm-side"><div class="aside-t">${L.ch}</div><div class="aside-s">${L.chSub}</div>${ch}</aside>
+    </div>`;
+}
+function renderDemoPage() {
+  const L = DEMO_L[state.lang];
+  const opts = L.topics.slice(); if (demoPreset && !opts.includes(demoPreset)) opts.unshift(demoPreset);
+  const sel = demoPreset || opts[0];
+  const ch = contactChannels().map(c => `<a class="dm-ch" style="--c:${CH_COL[c.k]}" href="${c.href}" ${(c.k === 'mail' || c.k === 'tel') ? '' : 'target="_blank" rel="noopener"'}><span class="dm-ic">${S(CH_ICO[c.k], 'ico')}</span><span><b>${c.label}</b><small>${c.val}</small></span>${ARROW}</a>`).join('');
+  return `<div class="dmap" style="--c:#007397;--soft:#DDF1F7"><svg class="spine" aria-hidden="true"></svg>
+    ${crumb([{ label: L.title }])}
+    ${pageHero({ style: '--c:#007397;--soft:#DDF1F7', icon: S('<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>'), eyebrow: L.eyebrow, title: L.title, sub: L.sub })}
+    ${demoBlock()}</div>`;
+}
 function renderContactPage() {
   const dict = I18N[state.lang];
   return `
@@ -2067,7 +2139,7 @@ function renderContactPage() {
     ${pageHero({ style: '--c:#007397;--soft:#DDF1F7', icon: S('<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/>'), title: dict.contactTitle, sub: dict.contactSub,
       right: leafLink({ label: 'IT Park / TechnoPark, Tashkent', small: 'TASHKENT', click: "window.open('https://maps.google.com/?q=IT+Park+Tashkent','_blank')" })
            + leafLink({ label: '+998 90 277 73 66', click: "location.href='tel:+998902777366'" })
-           + leafLink({ label: 'info@digitwins.uz', click: "location.href='mailto:info@digitwins.uz'" }) })}
+           + contactChannels().filter(c => c.k !== 'tel').map(c => leafLink({ label: c.k === 'mail' ? c.val : c.label, click: c.k === 'mail' ? `location.href='${c.href}'` : `window.open('${c.href}','_blank')` })).join('') })}
     <div class="cband" data-hook>
       <div><div class="k">LIVE DEMO</div><a class="big" href="tel:+998902777366">+998 90 277 73 66</a></div>
       <button class="btn" onclick="openDemoModal(${demoRef(dict.contactTitle)})"><span class="dot live"></span>${dict.demoBtn}</button>
@@ -2120,6 +2192,7 @@ function renderApp() {
   else if (state.route === 'hakkimizda') html = renderAboutPage();
   else if (DIVISIONS[state.route]) html = renderDivisionPage(state.route);
   else if (state.route === 'iletisim') html = renderContactPage();
+  else if (state.route === 'demo') html = renderDemoPage();
   else if (state.route === 'gundem') html = renderAgendaPage();
   else if (state.route.startsWith('haber-')) html = renderNewsDetail(state.route.slice(6));
   else if (activePage) html = renderDetailPage(activePage);
@@ -2152,12 +2225,12 @@ function renderFooter(dict) {
   const mk = (label, click, c) => `<li><button onclick="${click}" ${c ? `style="--c:${c}"` : ''}>${label}</button></li>`;
   const FOOT_COLS = [
     { h: f.sol, items: ['platformlar', 'akademi', 'danismanlik', 'etkinlikler'].map(d => mk(t(DIVISIONS[d].title), `navigate('${d}')`, DIVISIONS[d].hex)) },
-    { h: f.corp, items: [mk(f.about, "navigate('hakkimizda')"), mk(f.contact, "navigate('iletisim')"), mk(f.pt, 'goPartners()')] },
+    { h: f.corp, items: [mk(f.about, "navigate('hakkimizda')"), mk(f.contact, "navigate('iletisim')"), mk(f.pt, 'goPartners()'), mk(DEMO_L[state.lang].title, "navigate('demo')")] },
     { h: f.ag, items: [mk(f.news, "agendaTab='news';navigate('gundem')"), mk(f.ann, "agendaTab='ann';navigate('gundem')")] }
   ];
   const logo = document.querySelector('header.site .logo-mark').innerHTML;
   el.innerHTML = `<div class="wrap"><div class="fgrid">
-    <div class="fbrand"><button class="flogo" onclick="navigate('home')"><span class="logo-mark">${logo}</span><span><b>DigiTwins</b><small>OPERATIONAL SOLUTIONS</small></span></button><p>${f.tag}</p></div>
+    <div class="fbrand"><button class="flogo" onclick="navigate('home')"><span class="logo-mark">${logo}</span><span><b>DigiTwins</b><small>OPERATIONAL SOLUTIONS</small></span></button><p>${f.tag}</p><div class="fch">${contactChannels().map(c => `<a href="${c.href}" ${(c.k === 'mail' || c.k === 'tel') ? '' : 'target="_blank" rel="noopener"'} style="--c:${CH_COL[c.k]}">${S(CH_ICO[c.k], 'ico-sm')}${c.k === 'mail' ? c.val : c.k === 'tel' ? c.val : c.label}</a>`).join('')}</div></div>
     ${FOOT_COLS.map(c => `<nav class="fcol"><h4>${c.h}</h4><ul>${c.items.join('')}</ul></nav>`).join('')}
   </div><div class="fbot"><span>© 2026 DigiTwins · digitwins.uz</span><span>${f.rights}</span></div></div>`;
 }
@@ -2175,7 +2248,7 @@ function addPageNav() {
   root.appendChild(bar);
 }
 window.addEventListener('popstate', e => { const r = (e.state && e.state.r) || location.hash.replace('#', '') || 'home'; navigate(r, true); });
-(() => { const r = location.hash.replace('#', ''); if (r && (r === 'hakkimizda' || r === 'iletisim' || r === 'gundem' || r.startsWith('haber-') || DIVISIONS[r] || PAGES.find(p => p.id === r))) state.route = r;
+(() => { const r = location.hash.replace('#', ''); if (r && (r === 'hakkimizda' || r === 'iletisim' || r === 'demo' || r === 'gundem' || r.startsWith('haber-') || DIVISIONS[r] || PAGES.find(p => p.id === r))) state.route = r;
   try { history.replaceState({ r: state.route }, '', '#' + state.route); } catch (e) {} })();
 
 renderApp();
