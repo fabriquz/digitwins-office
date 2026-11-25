@@ -1036,12 +1036,7 @@ select:focus{outline:none;border-color:var(--brand-2);box-shadow:0 0 0 3px rgba(
 #bolumler .tree .leaf .dt-mini{width:24px!important;height:24px!important}
 @media(max-width:699px){#bolumler .tree .leaf{width:100%!important;max-width:none!important}}
 @media(min-width:700px){#bolumler .tree .leaf:has(.tp-b:nth-child(3)){width:236px!important;max-width:236px!important}}
-.shared{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-.shared .leaves{display:flex;flex-direction:column;gap:12px;padding:0!important}
-.sh-cap{align-self:flex-start;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;color:#fff;background:linear-gradient(90deg,#EA580C,#1D4ED8)}
-#bolumler .tree .leaf.sh{border:2px solid transparent!important;background:linear-gradient(#F1F5F9,#F1F5F9) padding-box,linear-gradient(90deg,#EA580C,#1D4ED8) border-box!important}
-@media(min-width:700px){.sh-m{display:none!important}#bolumler .tree .grp[data-dk="danismanlik"] .leaves{display:none}}
-@media(max-width:699px){.shared{display:none}}
+@media(min-width:700px){.side.right{padding-right:36px}}
 </style>
 </head>
 <body>
@@ -1546,7 +1541,7 @@ function renderHome() {
   const DT_MINI = `<svg class="dt-mini" viewBox="0 0 400 442" aria-hidden="true"><polygon points="197,221 359,131 359,311 197,401" fill="#22a6c9" stroke="#22a6c9" stroke-width="16" stroke-linejoin="round"/><path d="M197,41 L359,131 M197,41 L41,131 L197,221 M41,131 L41,311 L197,401" fill="none" stroke="#22a6c9" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><g fill="#fff" stroke="#22a6c9" stroke-width="18"><circle cx="197" cy="41" r="30"/><circle cx="41" cy="131" r="30"/><circle cx="197" cy="221" r="30"/><circle cx="41" cy="311" r="30"/></g></svg>`;
   const MAP_SHORT = {
     'bolge-kurulumu': { tr: 'Bölge Kurulumu', en: 'Zone Setup', ru: 'Создание зоны', uz: 'Hudud tashkil etish' },
-    'bolge-tanitim-satis': { tr: 'Bölge Pazarlaması', en: 'Zone Marketing', ru: 'Маркетинг зоны', uz: 'Hudud marketingi' },
+    'bolge-tanitim-satis': { tr: 'Yatırımcı Çekme', en: 'Attracting Investors', ru: 'Привлечение инвесторов', uz: 'Investor jalb qilish' },
     'bolge-yonetimi': { tr: 'Bölge Yönetimi', en: 'Zone Management', ru: 'Управление зоной', uz: 'Hudud boshqaruvi' },
     'uretim-yonetimi': { tr: 'Üretim Yönetimi', en: 'Production Mgmt', ru: 'Управление пр-вом', uz: 'Ishlab chiqarish' },
     'danismanlik-kurulum': { tr: 'Bölge Kurulumu', en: 'Zone Setup', ru: 'Создание зоны', uz: 'Hudud tashkil etish' },
@@ -1564,15 +1559,13 @@ function renderHome() {
   const mk = (dk, side) => {
     const div = DIVISIONS[dk];
     const allItems = PAGES.filter(p => p.division === dk && !p.layer);
-    const shIds = dk === 'akademi' ? SH_AK : dk === 'danismanlik' ? SH_DN : [];
-    const items = allItems.filter(p => !shIds.includes(p.id));
-    const shMobile = shIds.map(id => allItems.find(p => p.id === id)).filter(Boolean).map(p => sleaf(p, 'sh-m')).join('');
+    const items = allItems;
     const subs = [...new Set(items.map(i => i.group).filter(Boolean))];
     const body = subs.length
       ? `<div class="subs">${subs.map(g => `
           <div class="sub"><span class="snode">${t(SUB_LABELS[g])}</span>
             <div class="leaves">${items.filter(i => i.group === g).map(leaf).join('')}</div></div>`).join('')}</div>`
-      : `<div class="leaves">${items.map(leaf).join('')}${shMobile}</div>`;
+      : `<div class="leaves">${items.map(leaf).join('')}</div>`;
     return `
     <div class="grp ${side}" style="${cv(div)}" data-c="${div.hex}" data-dk="${dk}">
       <button class="bnode" onclick="navigate('${dk}')">
@@ -1582,7 +1575,7 @@ function renderHome() {
       ${body}
     </div>`;
   };
-  const groups = `<div class="side left">${mk('platformlar', 'l')}${mk('etkinlikler', 'l')}</div><div class="side right">${mk('akademi', 'r')}<div class="shared"><span class="sh-cap">${SH_CAP[state.lang]}</span><div class="leaves">${SH_DN.map(id => sleaf(PAGES.find(p => p.id === id), 'sh-w')).join('')}</div></div>${mk('danismanlik', 'r')}</div>`;
+  const groups = `<div class="side left">${mk('platformlar', 'l')}${mk('etkinlikler', 'l')}</div><div class="side right">${mk('akademi', 'r')}${mk('danismanlik', 'r')}</div>`;
 
   return hero + `
   <section id="bolumler" style="scroll-margin-top:90px">
@@ -1675,8 +1668,6 @@ function drawTree() {
   if (!tree || !svg) return;
   tree.style.transform = 'none'; tree.parentElement.style.height = '';
   const wide = window.innerWidth >= 700;
-  { const sh = tree.querySelector('.shared'), l0 = tree.querySelector('.grp[data-dk="akademi"] .leaf:not(.sh-m)');
-    if (sh && wide && l0) { sh.style.marginLeft = '0px'; sh.style.marginLeft = (l0.getBoundingClientRect().left - sh.getBoundingClientRect().left) + 'px'; } else if (sh) sh.style.marginLeft = ''; }
   const T = tree.getBoundingClientRect();
   const R = el => { const r = el.getBoundingClientRect(); return { l: r.left - T.left, r: r.right - T.left, t: r.top - T.top, b: r.bottom - T.top, cy: (r.top + r.bottom) / 2 - T.top, cx: (r.left + r.right) / 2 - T.left }; };
   const curve = (ax, ay, bx, by) => wide
@@ -1731,11 +1722,12 @@ function drawTree() {
     });
     else g.querySelectorAll('.leaf:not(.sh-m)').forEach(lf => link(n, R(lf), 2.6, .55));
   });
-  if (wide) { const gs = ['akademi', 'danismanlik'].map(k => tree.querySelector(`.grp[data-dk="${k}"]`)).filter(Boolean);
-    tree.querySelectorAll('.shared .leaf').forEach(lf => { const Q = R(lf);
-      gs.forEach(g => { const P = R(g.querySelector('.bnode')), c = g.dataset.c;
-        out += `<path class="br" d="${curve(P.r - 4, P.cy, Q.l + 4, Q.cy)}" stroke="${c}" stroke-width="2.4" stroke-opacity=".6"/>`; });
-      out += `<circle cx="${Q.l + 4}" cy="${Q.cy}" r="3.2" fill="#64748B" opacity=".8"/>`; }); }
+  // Akademi ↔ Danışmanlık: aynı konudaki kutu çiftleri ince köprüyle bağlanır
+  if (wide) { const pairs = [['bolge-kurulumu', 'danismanlik-kurulum'], ['bolge-tanitim-satis', 'yatirimci-cekme'], ['bolge-yonetimi', 'danismanlik-yonetim']];
+    pairs.forEach(([x, y], i) => { const A = tree.querySelector(`.leaf[onclick="navigate('${x}')"]`), D = tree.querySelector(`.leaf[onclick="navigate('${y}')"]`); if (!A || !D) return;
+      const P = R(A), Q = R(D), ox = 7 + (2 - i) * 6, x0 = P.r + 1;
+      out += `<path class="br bridge" d="M${x0} ${P.cy} C${x0 + ox} ${P.cy}, ${x0 + ox} ${Q.cy}, ${x0} ${Q.cy}" stroke="#64748B" stroke-width="1.6" stroke-opacity=".6" stroke-dasharray="3 3" fill="none"/>`
+           + `<circle cx="${x0}" cy="${P.cy}" r="2.6" fill="#EA580C"/><circle cx="${x0}" cy="${Q.cy}" r="2.6" fill="#1D4ED8"/>`; }); }
   // GreenCarbonAI katmanı: merkezden zemine inen canlı sarmaşık
   const lay = tree.querySelector('.layer');
   if (lay) {
