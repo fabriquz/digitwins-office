@@ -791,7 +791,36 @@ svg.ph-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:non
 .nw-more button span{font-weight:500;opacity:.7;margin-left:6px}
 .nw-more button:hover{background:#007397;color:#fff}
 @media(max-width:640px){.nw-filter{flex-wrap:nowrap;overflow-x:auto;margin-right:-16px;padding-bottom:4px}.nw-chip{flex:none;white-space:nowrap}}
-.partners + .agmap{margin:48px 0 56px!important}
+.partners + .agmap{margin:36px 0 0!important}
+
+/* Üst menü: daha yüksek, daha dolgun */
+header.site .bar{height:88px}
+.logo-mark{width:48px;height:52px}
+.logo-name{font-size:23px}
+.logo-sub{font-size:10.5px;margin-top:5px}
+.nav-link{font-size:16px;padding:11px 20px}
+#desktop-nav{gap:6px}
+@media(max-width:859px){header.site .bar{height:72px}.logo-mark{width:40px;height:44px}.logo-name{font-size:20px}.logo-sub{font-size:9px}}
+@media(min-width:860px) and (max-width:1149px){.nav-link{font-size:15px;padding:10px 15px}}
+/* Partnerler: daha alçak şerit */
+.partners{margin-top:28px}
+.pt-cell{height:70px}
+.pt-chip{padding:6px 15px}
+/* Altbilgi */
+footer.site{background:linear-gradient(180deg,#fff,#F3F8FA);border-top:1px solid var(--line);margin-top:24px}
+.fgrid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:36px;padding:48px 0 30px}
+.fbrand p{margin:14px 0 0;max-width:300px;font-size:14px;line-height:1.55;color:var(--muted)}
+.flogo{display:flex;align-items:center;gap:12px;text-align:left}
+.flogo .logo-mark{width:40px;height:44px}
+.flogo b{display:block;font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.02em}
+.flogo small{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--faint);margin-top:4px}
+.fcol h4{margin:0 0 14px;font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--brand)}
+.fcol ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.fcol button{font-size:15px;font-weight:600;color:var(--ink-2);display:inline-flex;align-items:center;gap:8px;transition:color .15s,transform .15s}
+.fcol button[style]::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c)}
+.fcol button:hover{color:var(--c,var(--brand));transform:translateX(2px)}
+.fbot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:18px 0 24px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+@media(max-width:859px){.fgrid{grid-template-columns:1fr 1fr;gap:28px;padding:36px 0 24px}.fbrand{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -821,14 +850,7 @@ svg.ph-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:non
 
 <main><div class="wrap" id="app-root"></div></main>
 
-<footer class="site">
-  <div class="wrap">
-    <div class="bar">
-      <div class="fl"><span style="width:22px;height:24px;display:inline-block"><svg class="dt-logo" viewBox="0 0 400 442" aria-hidden="true"><polygon points="197,221 359,131 359,311 197,401" fill="#22a6c9" stroke="#22a6c9" stroke-width="16" stroke-linejoin="round"/><path d="M197,41 L359,131 M197,41 L41,131 L197,221 M41,131 L41,311 L197,401" fill="none" stroke="#22a6c9" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><g fill="#fff" stroke="#22a6c9" stroke-width="18"><circle cx="197" cy="41" r="30"/><circle cx="41" cy="131" r="30"/><circle cx="197" cy="221" r="30"/><circle cx="41" cy="311" r="30"/></g></svg></span><b style="color:var(--ink);font-family:var(--display)">DigiTwins</b><span>·</span><span>digitwins.uz</span></div>
-      <button class="flink" onclick="navigate('iletisim')"><span id="footer-contact-link">İletişim</span><svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-    </div>
-  </div>
-</footer>
+<footer class="site" id="site-footer"></footer>
 
 <div class="modal" id="demo-modal" onclick="if(event.target===this)closeDemoModal()">
   <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -1961,9 +1983,9 @@ function renderApp() {
   demoTopics = [];
   pinnedTopic = null;
   const navItems = [
-    { id: 'hakkimizda', label: dict.nav.about }, { id: 'platformlar', label: dict.nav.platforms },
+    { id: 'platformlar', label: dict.nav.platforms },
     { id: 'akademi', label: dict.nav.academy }, { id: 'danismanlik', label: dict.nav.consulting },
-    { id: 'etkinlikler', label: dict.nav.events }, { id: 'iletisim', label: dict.nav.contact }
+    { id: 'etkinlikler', label: dict.nav.events }
   ];
   const activePage = PAGES.find(p => p.id === state.route);
   const activeId = activePage ? activePage.division : state.route;
@@ -1972,8 +1994,7 @@ function renderApp() {
   document.getElementById('mobile-menu').innerHTML = links + `<button class="btn btn-primary" onclick="openDemoModal()">${dict.demoBtn}</button>`;
   renderLang();
   document.getElementById('nav-demo-text').textContent = dict.demoBtn;
-  document.getElementById('footer-contact-link').textContent = dict.nav.contact;
-  document.querySelector('.flink').style.display = state.route === 'iletisim' ? 'none' : '';
+  renderFooter(dict);
   document.getElementById('modal-title').textContent = dict.modalTitle;
   document.getElementById('modal-sub').textContent = dict.modalSub;
   document.getElementById('lbl-topic').textContent = dict.lblTopic;
@@ -2008,6 +2029,27 @@ function pageSeq() {
   if (top.includes(r)) return top.map(id => ({ id, label: id === 'hakkimizda' ? I18N[state.lang].nav.about : id === 'iletisim' ? I18N[state.lang].nav.contact : t(DIVISIONS[id].title) }));
   return [];
 }
+// Altbilgi: sütunlu yapı. Yeni bölüm eklemek için FOOT_COLS'a bir satır ekle.
+const FOOT_L = { tr: { tag: 'Sanayi bölgesi ve fabrika için dijital ikiz çözümleri', sol: 'Çözümler', corp: 'Kurumsal', ag: 'Gündem', about: 'Hakkımızda', contact: 'İletişim', news: 'Haberler', ann: 'Duyurular', pt: 'Partnerler', rights: 'Tüm hakları saklıdır' },
+  uz: { tag: 'Sanoat zonasi va zavod uchun raqamli egizak yechimlari', sol: 'Yechimlar', corp: 'Korporativ', ag: 'Kun tartibi', about: 'Biz haqimizda', contact: 'Aloqa', news: 'Yangiliklar', ann: 'E’lonlar', pt: 'Hamkorlar', rights: 'Barcha huquqlar himoyalangan' },
+  ru: { tag: 'Цифровые двойники для промзон и заводов', sol: 'Решения', corp: 'Компания', ag: 'Повестка', about: 'О нас', contact: 'Контакты', news: 'Новости', ann: 'Анонсы', pt: 'Партнёры', rights: 'Все права защищены' },
+  en: { tag: 'Digital twin solutions for industrial zones and factories', sol: 'Solutions', corp: 'Company', ag: 'Agenda', about: 'About', contact: 'Contact', news: 'News', ann: 'Announcements', pt: 'Partners', rights: 'All rights reserved' } };
+function goPartners() { navigate('home'); setTimeout(() => { const e = document.querySelector('.partners'); if (e) e.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 120); }
+function renderFooter(dict) {
+  const f = FOOT_L[state.lang], el = document.getElementById('site-footer'); if (!el) return;
+  const mk = (label, click, c) => `<li><button onclick="${click}" ${c ? `style="--c:${c}"` : ''}>${label}</button></li>`;
+  const FOOT_COLS = [
+    { h: f.sol, items: ['platformlar', 'akademi', 'danismanlik', 'etkinlikler'].map(d => mk(t(DIVISIONS[d].title), `navigate('${d}')`, DIVISIONS[d].hex)) },
+    { h: f.corp, items: [mk(f.about, "navigate('hakkimizda')"), mk(f.contact, "navigate('iletisim')"), mk(f.pt, 'goPartners()')] },
+    { h: f.ag, items: [mk(f.news, "agendaTab='news';navigate('gundem')"), mk(f.ann, "agendaTab='ann';navigate('gundem')")] }
+  ];
+  const logo = document.querySelector('header.site .logo-mark').innerHTML;
+  el.innerHTML = `<div class="wrap"><div class="fgrid">
+    <div class="fbrand"><button class="flogo" onclick="navigate('home')"><span class="logo-mark">${logo}</span><span><b>DigiTwins</b><small>OPERATIONAL SOLUTIONS</small></span></button><p>${f.tag}</p></div>
+    ${FOOT_COLS.map(c => `<nav class="fcol"><h4>${c.h}</h4><ul>${c.items.join('')}</ul></nav>`).join('')}
+  </div><div class="fbot"><span>© 2026 DigiTwins · digitwins.uz</span><span>${f.rights}</span></div></div>`;
+}
+
 function goBack() { if (history.state && history.state.r && history.length > 1) history.back(); else if (state.route.startsWith('haber-')) { agendaTab = 'news'; navigate('gundem'); } else navigate(PAGES.find(p => p.id === state.route) ? PAGES.find(p => p.id === state.route).division : 'home'); }
 function addPageNav() {
   const root = document.querySelector('#app-root .page'); if (!root || state.route === 'home') return;
