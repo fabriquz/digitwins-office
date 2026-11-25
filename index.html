@@ -810,7 +810,7 @@ const I18N = {
     heroDesc: 'Sanayi bölgelerinin kuruluşundan yatırım çekmeye, saha yönetiminden akıllı fabrika hatlarına kadar tüm operasyonları tek dijital ikizde birleştiriyoruz.',
     exploreBtn: 'Bölümleri İncele',
     twinLive: 'CANLI SANAYİ & FABRİKA İKİZİ',
-    layers: { all: 'Tümü', osb: 'OSB', invest: 'Yatırım', factory: 'Fabrika', carbon: 'Karbon' },
+    layers: { all: 'Tümü', osb: 'OSB', factory: 'Fabrika', production: 'Üretim', carbon: 'Karbon' },
     sectionsHeader: 'Çözümlerimiz', sectionsSub: 'İlgili bölüme veya doğrudan konu sayfasına geçin.',
     viewAll: 'Tümü', relatedTitle: 'İLGİLİ', relatedSub: 'Aynı konu hattındaki çözümler',
     noConsultingNote: 'Üretim konusunda danışmanlık yoktur; platformlar, akademi ve Fabrikanı Keşfet aktiftir.',
@@ -841,7 +841,7 @@ const I18N = {
     heroDesc: 'Sanoat zonalarini tashkil etish, investitsiya jalb qilish, hududni boshqarish va aqlli zavod liniyalarini yagona raqamli egizakda birlashtiramiz.',
     exploreBtn: 'Bo‘limlarni ko‘rish',
     twinLive: 'JONLI SANOAT VA ZAVOD EGIZAGI',
-    layers: { all: 'Barchasi', osb: 'OSB', invest: 'Investitsiya', factory: 'Zavod', carbon: 'Uglerod' },
+    layers: { all: 'Barchasi', osb: 'OSB', factory: 'Zavod', production: 'Ishlab chiqarish', carbon: 'Uglerod' },
     sectionsHeader: 'Yechimlarimiz', sectionsSub: 'Kerakli bo‘lim yoki mavzu sahifasiga o‘ting.',
     viewAll: 'Barchasi', relatedTitle: 'BOG‘LIQ', relatedSub: 'Shu mavzudagi boshqa yechimlar',
     noConsultingNote: 'Ishlab chiqarishda konsalting yo‘q; platformalar, akademiya va Zavodingni kashf et faol.',
@@ -872,7 +872,7 @@ const I18N = {
     heroDesc: 'Объединяем создание индустриальных парков, привлечение инвесторов, управление инфраструктурой и умные заводы в едином цифровом двойнике.',
     exploreBtn: 'Смотреть разделы',
     twinLive: 'ЖИВОЙ ДВОЙНИК ПРОМЗОНЫ И ЗАВОДА',
-    layers: { all: 'Все', osb: 'Промзона', invest: 'Инвестиции', factory: 'Завод', carbon: 'Углерод' },
+    layers: { all: 'Все', osb: 'Промзона', factory: 'Завод', production: 'Производство', carbon: 'Углерод' },
     sectionsHeader: 'Наши решения', sectionsSub: 'Перейдите в нужный раздел или на страницу решения.',
     viewAll: 'Все', relatedTitle: 'СВЯЗАННОЕ', relatedSub: 'Решения этой тематической линии',
     noConsultingNote: 'В направлении «Производство» консалтинга нет; работают платформы, Академия и воркшоп.',
@@ -903,7 +903,7 @@ const I18N = {
     heroDesc: 'Unifying industrial zone setup, investor attraction, zone management, and smart factory lines inside one live digital twin.',
     exploreBtn: 'Explore Divisions',
     twinLive: 'LIVE ZONE & FACTORY TWIN',
-    layers: { all: 'All', osb: 'Zone', invest: 'Invest', factory: 'Factory', carbon: 'Carbon' },
+    layers: { all: 'All', osb: 'Zone', factory: 'Factory', production: 'Production', carbon: 'Carbon' },
     sectionsHeader: 'Our Solutions', sectionsSub: 'Open any division or jump directly to a topic page.',
     viewAll: 'All', relatedTitle: 'RELATED', relatedSub: 'Connected pages on the same topic',
     noConsultingNote: 'No consulting under Production; platforms, Academy, and Discover Your Factory are active.',
@@ -1118,8 +1118,8 @@ const FALLBACK = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' v
 
 // --- CANLI SANAYİ & FABRİKA DİJİTAL İKİZ SAHNESİ (koyu zemin) ---
 // --- CANLI İKİZ: kuru araziden canlı sanayi bölgesine (kodla animasyon, döngü) ---
-const TW_MAP = { osb: 1, invest: 2, factory: 3, carbon: 4 };
-const TW_CAP = { tr: ['DigiTwins', 'IQOSTİM*', 'Invest360 · InvestMagnet', 'IQPark · ERP · MES TREX', 'GreenCarbonAI'], uz: ['DigiTwins', 'IQOSTİM*', 'Invest360 · InvestMagnet', 'IQPark · ERP · MES TREX', 'GreenCarbonAI'], ru: ['DigiTwins', 'IQOSTİM*', 'Invest360 · InvestMagnet', 'IQPark · ERP · MES TREX', 'GreenCarbonAI'], en: ['DigiTwins', 'IQOSTİM*', 'Invest360 · InvestMagnet', 'IQPark · ERP · MES TREX', 'GreenCarbonAI'] };
+const TW_MAP = { osb: 1, factory: 2, production: 3, carbon: 4 };
+const TW_CAP = { tr: ['DigiTwins', 'IQOSTİM*', 'IQPark · ERP', 'MES · TREX', 'GreenCarbonAI'], uz: ['DigiTwins', 'IQOSTİM*', 'IQPark · ERP', 'MES · TREX', 'GreenCarbonAI'], ru: ['DigiTwins', 'IQOSTİM*', 'IQPark · ERP', 'MES · TREX', 'GreenCarbonAI'], en: ['DigiTwins', 'IQOSTİM*', 'IQPark · ERP', 'MES · TREX', 'GreenCarbonAI'] };
 const TW_STATS = [['0 MW', '0', '—'], ['2.4 MW', '0', '—'], ['8.6 MW', '12', '—'], ['42.8 MW', '128', 'B'], ['42.8 MW', '128', 'A+']];
 let twinStage = 0;
 setInterval(() => { if (state.twinLayer === 'all') { twinStage = (twinStage + 1) % 6; twinApply(); } }, 2300);
@@ -1132,7 +1132,7 @@ function setTwinLayer(layer) {
 function renderDigitalTwinVisual() {
   const dict = I18N[state.lang];
   const l = state.twinLayer;
-  const btns = ['all', 'osb', 'invest', 'factory', 'carbon'].map(k =>
+  const btns = ['all', 'osb', 'factory', 'production', 'carbon'].map(k =>
     `<button class="${l === k ? 'on' : ''}" data-k="${k}" onclick="setTwinLayer('${k}')">${dict.layers[k]}</button>`).join('');
   const U = 32, px = v => (v * U).toFixed(1) + 'px';
   // gerçek 3B kutu (CSS 3D): x,y,w,d birim; h piksel
@@ -1169,7 +1169,7 @@ function renderDigitalTwinVisual() {
     if (!office) { const n = 4, tw = W * U / n; for (let i = 0; i < n; i++) extra += `<b class="tooth" style="left:${(i * tw).toFixed(1)}px;width:${(tw * 1.18).toFixed(1)}px"></b><b class="glass" style="left:${((i + 1) * tw).toFixed(1)}px;width:${(tw * .62).toFixed(1)}px"></b>`; extra += `<b class="door"></b>`; }
     else extra += `<b class="solar" data-s="4"></b>`;
     const hh = office ? h + 14 : h;
-    w += `<div class="fac rise" data-s="3" style="transition-delay:${k * 110}ms">${box(ix0, iy0, W, D, hh, office ? ['#E0F2FE', '#38BDF8', '#0369A1'] : c, extra, office ? 'office' : 'hall')}`
+    w += `<div class="fac rise" data-s="2" style="transition-delay:${k * 110}ms">${box(ix0, iy0, W, D, hh, office ? ['#E0F2FE', '#38BDF8', '#0369A1'] : c, extra, office ? 'office' : 'hall')}`
        + (office ? '' : box(ix0 + .15, iy0 + .15, .22, .22, hh + 34, ['#F1F5F9', '#CBD5E1', '#94A3B8'], '<b class="band"></b>', 'chim'))
        + (k % 4 === 0 ? box(ix0 + W - .55, iy0 - .02, .45, .45, hh + 10, ['#E2E8F0', '#CBD5E1', '#94A3B8'], '', 'silo') : '')
        + `</div>`;
