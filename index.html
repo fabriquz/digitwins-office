@@ -791,6 +791,7 @@ svg.ph-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:non
 .nw-more button span{font-weight:500;opacity:.7;margin-left:6px}
 .nw-more button:hover{background:#007397;color:#fff}
 @media(max-width:640px){.nw-filter{flex-wrap:nowrap;overflow-x:auto;margin-right:-16px;padding-bottom:4px}.nw-chip{flex:none;white-space:nowrap}}
+.partners + .agmap{margin:48px 0 56px!important}
 </style>
 </head>
 <body>
@@ -1283,8 +1284,8 @@ function renderHome() {
       <p class="lead">${dict.heroDesc}</p>
     </div>
     <div>${renderDigitalTwinVisual()}</div>
-  </section>
-  ${(() => { const a = AG[state.lang], x = ANNOUNCEMENTS[0], nw = NEWS[0]; const pg = x && PAGES.find(p => p.id === x.page);
+  </section>`;
+  const agenda = (() => { const a = AG[state.lang], x = ANNOUNCEMENTS[0], nw = NEWS[0]; const pg = x && PAGES.find(p => p.id === x.page);
     const meg = S('<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>', 'ico');
     const leaves = [leafLink({ label: a.ann, click: "agendaTab='ann';navigate('gundem')", style: '--c:#059669;--soft:#D1FAE5' }),
       leafLink({ label: a.news, click: "agendaTab='news';navigate('gundem')", style: '--c:#1D4ED8;--soft:#DBEAFE' })];
@@ -1293,7 +1294,8 @@ function renderHome() {
       <button class="ph-node ag-node" data-src onclick="agendaTab='ann';navigate('gundem')"><span class="ph-ic">${meg}</span><span><span class="s" style="margin:0 0 4px"><span class="dot live"></span> LIVE</span><b>${dict.nav.agenda}</b></span></button>
       <div class="ag-leaves">${leaves.join('')}${wait}</div>
       <button class="ag-all" onclick="agendaTab='ann';navigate('gundem')">${dict.viewAll} ${ARROW}</button>
-    </section>`; })()}`;
+    </section>`; })();
+
 
   const order = ['platformlar', 'akademi', 'danismanlik', 'etkinlikler'];
   const leaf = it => { const tps = it.sharedTopics || [it.topic];
@@ -1353,7 +1355,8 @@ function renderHome() {
     const cell = ([n, r, c, go]) => `<div class="pt-cell">${wave}<button class="pt-chip ${n === '+' ? 'add' : ''}" style="--pc:${c}" onclick="${go}">${n === '+' ? `<i>+</i><small>${r}</small>` : `<b>${n}</b><small>${r}</small>`}</button></div>`;
     const set = [...P, ...P, ...P].map(cell).join('');
     return `<section class="partners"><span class="pt-k"><span class="dot live"></span>${L[0]}</span>
-      <div class="pt-stream"><div class="pt-track">${set}${set}</div></div></section>`; })()}`;
+      <div class="pt-stream"><div class="pt-track">${set}${set}</div></div></section>`; })()}
+  ${agenda}`;
 }
 
 // Aynı konu hattındaki yaprakları vurgular (tıkla: sabitle, üzerine gel: önizle)
