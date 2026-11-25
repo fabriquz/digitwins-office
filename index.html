@@ -977,6 +977,22 @@ select:focus{outline:none;border-color:var(--brand-2);box-shadow:0 0 0 3px rgba(
 #bolumler .tree .leaf .lt{letter-spacing:-.015em;word-spacing:0;font-weight:500}
 #bolumler .tree .leaf .ico,#bolumler .tree .leaf>span:first-child{transform:scale(.88)}
 #bolumler .tree .leaf svg{max-width:100%}
+#bolumler .tree{--fs-title:15.5px;--fs-leaf:12.5px;--fs-meta:10.5px}
+#bolumler .tree .leaf{width:212px!important;max-width:212px!important;height:38px!important;min-height:38px!important;border-radius:19px!important;line-height:1.15!important;padding-left:4px!important;padding-right:4px!important;gap:4px!important}
+#bolumler .tree .leaf .lt{letter-spacing:-.01em}
+#bolumler .tree .leaf>*{transform:none}
+#bolumler .tree .leaf .ico,#bolumler .tree .leaf svg{width:14px;height:14px}
+#bolumler .tree .leaf [class*="ic"],#bolumler .tree .leaf .li{transform:none}
+#bolumler .tree .bnode{padding:6px 14px 6px 6px!important;gap:8px!important}
+#bolumler .tree .bnode .bi{width:28px!important;height:28px!important}
+#bolumler .tree .snode{padding:4px 10px!important}
+@media(min-width:700px){#bolumler .tree .root{width:164px!important;height:164px!important}#bolumler .tree .root .root-core{width:56px!important;height:56px!important;padding:10px!important}}
+#bolumler .tree .leaf>span:not(.lt){width:24px;height:24px;flex:none}
+#bolumler .tree .leaf>span:not(.lt) svg{width:13px;height:13px}
+#bolumler .tree .leaf>span:not(.lt):has(>span,>i,>svg+svg){width:auto;height:auto;display:inline-flex;gap:2px}
+#bolumler .tree .leaf>span:not(.lt) > *{flex:none}
+#bolumler .tree .leaf>span:not(.lt):has(>span) > span{width:19px;height:19px}
+#bolumler .tree .leaf>span:not(.lt):has(>span) > span svg{width:11px;height:11px}
 </style>
 </head>
 <body>
