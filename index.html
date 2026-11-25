@@ -231,16 +231,26 @@ html body .big-i{width:56px!important;height:56px!important;margin:6px 0 16px 6p
 @media(min-width:860px){.agmap{grid-template-columns:auto 1fr auto}.ag-all{justify-self:end}}
 @media(max-width:859px){.ag-leaves{padding-left:34px}}
 
-/* Partnerler şeridi */
-.partners{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:44px;padding:18px 22px;border-radius:22px;background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}
-.partners::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#007397,#22A6C9 30%,#EA580C 55%,#1D4ED8 75%,#059669)}
-.pt-k{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
-.pt-row{display:flex;flex-wrap:wrap;gap:12px;flex:1}
-.pt-card{display:inline-flex;align-items:baseline;gap:8px;padding:12px 20px;border-radius:14px;background:var(--tint);border:1px solid var(--line-2);transition:transform .2s,border-color .2s,box-shadow .2s}
-.pt-card b{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--pc,var(--ink))}
-.pt-card small{font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.08em}
-.pt-card:hover{transform:translateY(-2px);border-color:var(--pc,var(--brand));box-shadow:0 10px 22px -14px var(--pc,var(--brand))}
-.pt-add{background:#fff;border:1.5px dashed var(--line)}.pt-add span{font-size:20px;font-weight:700;color:var(--brand)}
+/* Partnerler şeridi: akan dal */
+.partners{margin-top:48px;position:relative}
+.pt-k{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--brand);margin:0 0 6px 4px}
+.pt-stream{position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.pt-track{display:flex;width:max-content;animation:ptflow 38s linear infinite}
+.pt-stream:hover .pt-track{animation-play-state:paused}
+@keyframes ptflow{to{transform:translateX(-50%)}}
+.pt-cell{position:relative;width:260px;height:96px;flex-shrink:0}
+.pt-wave{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.pt-w1{fill:none;stroke:#007397;stroke-width:4;stroke-linecap:round;opacity:.75}
+.pt-w2{fill:none;stroke:#fff;stroke-width:1.4;stroke-dasharray:2 9;stroke-linecap:round;animation:dash 1.6s linear infinite;opacity:.9}
+.pt-bud{fill:#fff;stroke:#007397;stroke-width:2}
+.pt-chip{position:absolute;left:65px;top:2px;transform:translateX(-50%);display:inline-flex;align-items:baseline;gap:7px;white-space:nowrap;padding:8px 16px;border-radius:999px;background:#fff;border:1.5px solid var(--pc);box-shadow:0 8px 18px -12px var(--pc);transition:transform .2s,box-shadow .2s}
+.pt-chip::after{content:"";position:absolute;left:50%;top:100%;width:1.5px;height:7px;background:var(--pc);opacity:.6}
+.pt-chip b{font-family:var(--display);font-size:16px;font-weight:800;letter-spacing:-.01em;color:var(--pc)}
+.pt-chip small{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.08em}
+.pt-chip.add{border-style:dashed}.pt-chip.add i{font-style:normal;font-weight:800;color:var(--pc)}.pt-chip.add small{color:var(--pc)}
+.pt-chip:hover{transform:translateX(-50%) translateY(-2px);box-shadow:0 12px 22px -12px var(--pc)}
+@media(max-width:600px){.pt-cell{width:220px}.pt-chip{left:55px}}
+@media (prefers-reduced-motion:reduce){.pt-track,.pt-w2{animation:none}}
 main{flex:1;width:100%}
 .page{padding:40px 0 72px;animation:fade .3s ease-out}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -691,6 +701,7 @@ svg.ph-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:non
 .bloom{animation:bloom 3.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
 @keyframes bloom{50%{opacity:.75}}
 .tree-wrap .tree .root{border-radius:999px;background:linear-gradient(160deg,#0A86AD 0%,#007397 45%,#0B2F45 100%);box-shadow:0 0 0 6px #fff,0 0 0 7px rgba(0,115,151,.22),0 20px 40px -18px rgba(11,27,51,.55)}
+.tree-wrap .tree .root span.s{display:none}
 @media(min-width:700px){.tree-wrap .tree .root{width:208px;height:208px;border-radius:50%;justify-content:center;padding:0;gap:12px}
 .tree-wrap .tree .root .root-core{width:72px;height:72px;padding:13px}}
 @media (prefers-reduced-motion:reduce){.bloom{animation:none}}
@@ -1259,10 +1270,12 @@ function renderHome() {
     </div>
   </section>
   ${(() => { const L = { tr: ['Partnerlerimiz', 'Partnerimiz olun'], uz: ['Hamkorlarimiz', 'Hamkor bo‘ling'], ru: ['Наши партнёры', 'Станьте партнёром'], en: ['Our Partners', 'Become a partner'] }[state.lang];
-    const P = [['Uyumsoft', 'ERP', '#E11D48'.replace('E11D48', '0369A1'), 'erp'], ['TREX', 'MES', '#1D4ED8', 'mes']];
+    const P = [['Uyumsoft', 'ERP', '#0369A1', "navigate('erp')"], ['TREX', 'MES', '#1D4ED8', "navigate('mes')"], ['+', L[1], '#059669', "navigate('iletisim')"]];
+    const wave = `<svg class="pt-wave" viewBox="0 0 260 96" preserveAspectRatio="none" aria-hidden="true"><path d="M0 62 C30 40 100 40 130 62 S230 84 260 62" class="pt-w1"/><path d="M0 62 C30 40 100 40 130 62 S230 84 260 62" class="pt-w2"/><path d="M0 0 C5 -7 14 -7 18 0 C14 7 5 7 0 0Z" fill="#22C55E" opacity=".85" transform="translate(186 74) rotate(-28) scale(.8)"/><circle cx="65" cy="45.5" r="3.6" class="pt-bud"/></svg>`;
+    const cell = ([n, r, c, go]) => `<div class="pt-cell">${wave}<button class="pt-chip ${n === '+' ? 'add' : ''}" style="--pc:${c}" onclick="${go}">${n === '+' ? `<i>+</i><small>${r}</small>` : `<b>${n}</b><small>${r}</small>`}</button></div>`;
+    const set = [...P, ...P, ...P].map(cell).join('');
     return `<section class="partners"><span class="pt-k"><span class="dot live"></span>${L[0]}</span>
-      <div class="pt-row">${P.map(([n, r, c, id]) => `<button class="pt-card" style="--pc:${c}" onclick="navigate('${id}')"><b>${n}</b><small>${r}</small></button>`).join('')}
-        <button class="pt-card pt-add" onclick="navigate('iletisim')"><span>+</span><small>${L[1]}</small></button></div></section>`; })()}`;
+      <div class="pt-stream"><div class="pt-track">${set}${set}</div></div></section>`; })()}`;
 }
 
 // Aynı konu hattındaki yaprakları vurgular (tıkla: sabitle, üzerine gel: önizle)
