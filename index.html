@@ -863,6 +863,37 @@ footer.site{background:linear-gradient(180deg,#fff,#F3F8FA);border-top:1px solid
 .nw-card p{font-size:13px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .nw-filter{margin:0 0 12px!important}
 @media(max-width:640px){.tiles{grid-template-columns:1fr!important}.tile .img{width:64px;height:64px}.page{padding:14px 0 32px}.nw-feat{flex-direction:column}.nw-feat .nw-img{flex:none;min-height:0!important;aspect-ratio:16/9}}
+
+/* Haberler / Duyurular: kompakt kartlar */
+.nw-grid{grid-template-columns:repeat(auto-fill,minmax(340px,1fr))!important;gap:10px!important}
+.nw-card,.nw-feat{flex-direction:row!important;align-items:center;gap:12px;padding:10px 14px 10px 10px;border-radius:16px!important;grid-column:auto!important}
+.nw-card .nw-img,.nw-feat .nw-img{flex:none!important;width:96px;height:96px;aspect-ratio:1/1!important;min-height:0!important;border-radius:12px}
+.nw-ph svg{width:30px;height:30px}
+.nw-body,.nw-feat .nw-body{padding:0!important;gap:4px!important;min-width:0;justify-content:center}
+.nw-card h3,.nw-feat h3{font-size:15px!important;line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.nw-card p,.nw-feat p{font-size:12.5px!important;line-height:1.4;-webkit-line-clamp:2}
+.nw-tag{font-size:9.5px;padding:3px 8px}
+.nw-date{font-size:11.5px}
+.nw-meta{gap:4px 8px}
+.nw-src{padding-top:0;font-size:12px}
+.nw-card:hover{transform:translateY(-2px)}
+.nw-more{margin:18px 0 4px}
+.ag-list{grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:10px}
+.ag-item{gap:12px;padding:10px 14px 10px 10px;border-radius:16px!important}
+.ag-date{width:52px;height:52px;border-radius:12px}
+.ag-body h3{font-size:15px}
+.ag-body p{font-size:12.5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ag-go{font-size:12px}
+.nw-detail{max-width:760px}
+.nw-detail header{gap:8px;margin-bottom:12px}
+.nw-detail h1{font-size:clamp(22px,2.8vw,30px)}
+.nw-fig{margin:0 0 16px;border-radius:16px}
+.nw-fig img{max-height:260px}
+.nw-text p{font-size:16px;line-height:1.6;margin:0 0 12px}
+.nw-text p.lead{font-size:17.5px}
+.nw-from{margin-top:18px;padding:12px 16px}
+@media(max-width:640px){.nw-grid{grid-template-columns:1fr!important}.nw-card .nw-img,.nw-feat .nw-img{width:80px;height:80px}.ag-list{grid-template-columns:1fr}.nw-feat{flex-direction:row!important}}
+.ag-list{grid-template-columns:1fr!important}
 </style>
 </head>
 <body>
