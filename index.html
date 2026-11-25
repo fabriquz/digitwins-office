@@ -742,6 +742,29 @@ svg.ph-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:non
   .agmap .ag-all:hover{background:var(--brand);color:#fff}
 }
 @media(max-width:859px){.agmap .ag-leaves{display:grid;gap:10px;padding-left:34px}.agmap .ag-all{justify-self:center;padding:10px 20px;border-radius:999px;border:1.5px solid var(--brand);background:#fff}}
+
+/* Haberler ızgarası */
+.nw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.nw-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:transform .2s,box-shadow .2s,border-color .2s;color:var(--ink)}
+.nw-card:hover{transform:translateY(-3px);border-color:var(--c);box-shadow:0 16px 30px -18px var(--c)}
+.nw-img{position:relative;display:block;aspect-ratio:16/9;background:linear-gradient(135deg,var(--soft),#fff);overflow:hidden}
+.nw-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.nw-ph{position:absolute;inset:0;display:grid;place-items:center;color:var(--c);opacity:.5}
+.nw-ph svg{width:44px;height:44px}
+.nw-body{display:flex;flex-direction:column;gap:8px;padding:16px 18px 18px;flex:1}
+.nw-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.nw-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--c)}
+.nw-date{font-size:12.5px;color:var(--faint)}
+.nw-card h3{font-size:17px;line-height:1.3;font-weight:800}
+.nw-card p{font-size:14px;line-height:1.5;color:var(--muted)}
+.nw-src{margin-top:auto;padding-top:4px;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--c)}
+.nw-feat{grid-column:1/-1;flex-direction:row}
+.nw-feat .nw-img{flex:0 0 52%;aspect-ratio:auto;min-height:300px}
+.nw-feat .nw-body{padding:28px 30px;justify-content:center}
+.nw-feat h3{font-size:clamp(22px,2.6vw,30px)}
+.nw-feat p{font-size:15.5px}
+@media(max-width:1000px){.nw-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.nw-grid{grid-template-columns:1fr}.nw-feat{flex-direction:column}.nw-feat .nw-img{flex:none;aspect-ratio:16/9;min-height:0}.nw-feat .nw-body{padding:18px}.nw-feat h3{font-size:20px}}
 </style>
 </head>
 <body>
@@ -813,7 +836,6 @@ const I18N = {
     layers: { all: 'Tümü', osb: 'OSB', factory: 'Fabrika', production: 'Üretim', carbon: 'Karbon' },
     sectionsHeader: 'Çözümlerimiz', sectionsSub: 'İlgili bölüme veya doğrudan konu sayfasına geçin.',
     viewAll: 'Tümü', relatedTitle: 'İLGİLİ', relatedSub: 'Aynı konu hattındaki çözümler',
-    noConsultingNote: 'Üretim konusunda danışmanlık yoktur; platformlar, akademi ve Fabrikanı Keşfet aktiftir.',
     sectionCountLabel: 'çözüm',
     aboutBadge: 'KURUMSAL KİMLİK', aboutTitle: 'Hakkımızda',
     aboutSub: 'Türkiye’nin sanayi bölgesi ve akıllı fabrika dönüşümündeki en yetkin uzman kadrosuyla Özbekistan’ın dijital geleceğini inşa ediyoruz.',
@@ -844,7 +866,6 @@ const I18N = {
     layers: { all: 'Barchasi', osb: 'OSB', factory: 'Zavod', production: 'Ishlab chiqarish', carbon: 'Uglerod' },
     sectionsHeader: 'Yechimlarimiz', sectionsSub: 'Kerakli bo‘lim yoki mavzu sahifasiga o‘ting.',
     viewAll: 'Barchasi', relatedTitle: 'BOG‘LIQ', relatedSub: 'Shu mavzudagi boshqa yechimlar',
-    noConsultingNote: 'Ishlab chiqarishda konsalting yo‘q; platformalar, akademiya va Zavodingni kashf et faol.',
     sectionCountLabel: 'yechim',
     aboutBadge: 'KORPORATIV PROFIL', aboutTitle: 'Biz haqimizda',
     aboutSub: 'Turkiyaning sanoat zonalari va aqlli zavodlarni raqamlashtirish bo‘yicha eng yetuk mutaxassislari bilan O‘zbekistonning raqamli kelajagini quramiz.',
@@ -875,7 +896,6 @@ const I18N = {
     layers: { all: 'Все', osb: 'Промзона', factory: 'Завод', production: 'Производство', carbon: 'Углерод' },
     sectionsHeader: 'Наши решения', sectionsSub: 'Перейдите в нужный раздел или на страницу решения.',
     viewAll: 'Все', relatedTitle: 'СВЯЗАННОЕ', relatedSub: 'Решения этой тематической линии',
-    noConsultingNote: 'В направлении «Производство» консалтинга нет; работают платформы, Академия и воркшоп.',
     sectionCountLabel: 'решений',
     aboutBadge: 'О КОМПАНИИ', aboutTitle: 'О нас',
     aboutSub: 'Мы строим цифровое будущее Узбекистана вместе с лучшими экспертами Турции в области индустриальных зон и умных фабрик.',
@@ -906,7 +926,6 @@ const I18N = {
     layers: { all: 'All', osb: 'Zone', factory: 'Factory', production: 'Production', carbon: 'Carbon' },
     sectionsHeader: 'Our Solutions', sectionsSub: 'Open any division or jump directly to a topic page.',
     viewAll: 'All', relatedTitle: 'RELATED', relatedSub: 'Connected pages on the same topic',
-    noConsultingNote: 'No consulting under Production; platforms, Academy, and Discover Your Factory are active.',
     sectionCountLabel: 'solutions',
     aboutBadge: 'CORPORATE PROFILE', aboutTitle: 'About Us',
     aboutSub: 'Building Uzbekistan’s digital future with Turkey’s most capable experts in industrial zone and smart factory transformation.',
@@ -1568,7 +1587,6 @@ function renderDivisionPage(divKey) {
     ${crumb([{ label: t(div.title) }])}
     ${pageHero({ style: cv(div), icon: ICONS[divKey]('ico'), title: t(div.title), meta: `${items.length} ${dict.sectionCountLabel}`, sub: t(div.desc) })}
     ${body}
-    ${divKey === 'danismanlik' ? `<div class="note">${S('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>', 'ico')}<span>${dict.noConsultingNote}</span></div>` : ''}
   </div>`;
 }
 
@@ -1614,7 +1632,6 @@ function renderDetailPage(page) {
             <div class="ph-node" data-src><span class="ph-ic">${ICONS[page.division]('ico')}</span><b>${t(page.title)}</b></div>
             ${related.map(r => { const rd = DIVISIONS[r.division]; return leafLink({ label: t(r.title), small: t(rd.title), click: `navigate('${r.id}')`, style: cv(rd), tps: (r.sharedTopics || [r.topic]) }); }).join('')}
           </div>
-          ${page.topic === 'uretim' ? `<div class="note" style="margin-top:12px">${dict.noConsultingNote}</div>` : ''}
         </div>
         <div class="card cta">
           <h3>${t(page.title)}</h3>
@@ -1677,7 +1694,54 @@ const ANNOUNCEMENTS = [
   { page: 'fabrikani-kesfet', date: null }
 ];
 const NEWS = [
-  // { title: 'Haber başlığı', source: 'Kaynak adı', url: 'https://...', date: '2026-11-24' }
+  { date: '2026-11-11', cat: 'tr', source: 'Yeni Şafak (AA)', url: 'https://en.yenisafak.com/life/uzbekistan-turkiye-partner-on-rare-earth-processing-zones-3725446', img: 'https://img.piri.net/piri/upload/3/2026/11/11/ec8c4b3a-uzbekistan-turkiye-forge-partnership-to-process-rare-earth.webp',
+    t: { en: 'Uzbekistan, Türkiye forge partnership to process rare earth elements', tr: 'Özbekistan ve Türkiye nadir toprak elementlerinin işlenmesi için ortaklık kurdu', ru: 'Узбекистан и Турция создают партнёрство по переработке редкоземельных элементов', uz: 'O‘zbekiston va Turkiya noyob yer elementlarini qayta ishlash bo‘yicha hamkorlik o‘rnatdi' },
+    s: { en: 'OSTİM signed a cooperation agreement with Uzbekistan’s Technological Metals Complex to build processing facilities for rare earths and strategic minerals in Future Metals Technoparks.', tr: 'OSTİM, Özbekistan Teknolojik Metaller Kompleksi ile nadir toprak elementleri ve stratejik madenler için Future Metals Teknoparkları’nda işleme tesisleri kurmak üzere iş birliği anlaşması imzaladı.', ru: 'OSTIM подписал соглашение о сотрудничестве с Технологическим металлургическим комплексом Узбекистана о создании в технопарках Future Metals мощностей по переработке редкоземельных и стратегических минералов.', uz: 'OSTİM O‘zbekiston Texnologik metallar kompleksi bilan Future Metals texnoparklarida noyob yer va strategik minerallarni qayta ishlash obyektlarini qurish bo‘yicha hamkorlik shartnomasi imzoladi.' } },
+  { date: '2026-11-18', cat: 'carbon', source: 'UzDaily', url: 'https://www.uzdaily.uz/en/eu-carbon-border-rules-may-raise-costs-for-uzbek-exporters/', img: 'https://www.uzdaily.uz/media/filer_public/63/8f/638f46ca-e7f4-42f8-85ae-57447db0176f/cbam1811_20261118141840.webp',
+    t: { en: 'EU Carbon Border Rules May Raise Costs for Uzbek Exporters', tr: 'AB karbon sınır kuralları Özbek ihracatçıların maliyetini artırabilir', ru: 'Углеродные правила ЕС могут повысить расходы узбекских экспортёров', uz: 'EI uglerod chegara qoidalari o‘zbek eksportchilari xarajatini oshirishi mumkin' },
+    s: { en: 'An analysis by the Centre for Progressive Reforms estimates that about 9% of Uzbekistan’s exports to the EU could fall under CBAM, mainly fertilisers and metals.', tr: 'İleri Reformlar Merkezi analizine göre Özbekistan’ın AB’ye ihracatının yaklaşık %9’u, başta gübre ve metaller olmak üzere CBAM kapsamına girebilir.', ru: 'По анализу Центра прогрессивных реформ, около 9% экспорта Узбекистана в ЕС, в основном удобрения и металлы, может подпасть под CBAM.', uz: 'Progressiv islohotlar markazi tahliliga ko‘ra, O‘zbekistonning EIga eksportining taxminan 9 foizi, asosan o‘g‘it va metallar CBAM doirasiga tushishi mumkin.' } },
+  { date: '2026-10-29', cat: 'tr', source: 'Daily Sabah', url: 'https://www.dailysabah.com/politics/diplomacy/turkiye-uzbekistan-sign-5-deals-after-erdogan-mirziyoyev-talks', img: 'https://idsb.tmgrup.com.tr/ly/uploads/images/2026/10/29/thumbs/1200x675/468142.jpg',
+    t: { en: 'Türkiye, Uzbekistan sign 5 deals after Erdoğan-Mirziyoyev talks', tr: 'Türkiye ve Özbekistan, Erdoğan-Mirziyoyev görüşmesinin ardından 5 anlaşma imzaladı', ru: 'Турция и Узбекистан подписали 5 соглашений после переговоров Эрдогана и Мирзиёева', uz: 'Turkiya va O‘zbekiston Erdog‘an–Mirziyoyev muzokaralaridan so‘ng 5 ta kelishuv imzoladi' },
+    s: { en: 'Five agreements were signed in Ankara, including a high-level business council and a protocol amending the preferential trade agreement; bilateral trade was $3.1 billion in 2025 against a $5 billion target.', tr: 'Ankara’da, üst düzey iş konseyi ve tercihli ticaret anlaşmasını değiştiren protokol dahil 5 anlaşma imzalandı; ikili ticaret 2025’te 3,1 milyar dolar oldu, hedef 5 milyar dolar.', ru: 'В Анкаре подписаны пять соглашений, включая Совет по поддержке бизнеса высокого уровня и протокол об изменении соглашения о преференциальной торговле; товарооборот в 2025 году составил $3,1 млрд при цели $5 млрд.', uz: 'Ankarada oliy darajadagi biznes kengashi va imtiyozli savdo kelishuviga o‘zgartirish kiritish protokoli kabi 5 ta kelishuv imzolandi; 2025-yilda ikki tomonlama savdo 3,1 mlrd dollar bo‘ldi, maqsad — 5 mlrd dollar.' } },
+  { date: '2026-08-05', cat: 'tr', source: 'OSTİM OSB', url: 'https://ostim.org.tr/haberler/ozbekistan-in-mineralleri-ostim-modeliyle-yuksek-katma-deger', img: 'https://ostim.org.tr/public/images/pictures/org-tr-0115191.jpg',
+    t: { en: 'Uzbekistan’s minerals to be turned into high value-added products with the OSTİM model', tr: 'Özbekistan’ın mineralleri OSTİM modeliyle yüksek katma değere dönüşecek', ru: 'Минералы Узбекистана превратят в продукцию с высокой добавленной стоимостью по модели OSTIM', uz: 'O‘zbekiston minerallari OSTİM modeli asosida yuqori qo‘shilgan qiymatli mahsulotga aylantiriladi' },
+    s: { en: 'Future Metals Technoparks, planned on the OSTİM model, has prepared over 100 hectares of investment-ready land in Chirchiq, Ohangaron and Nurobod.', tr: 'OSTİM modeliyle planlanan Future Metals Teknoparkları, Çirçik, Ohangaron ve Nurabad’da 100 hektardan fazla yatırıma hazır arazi hazırladı.', ru: 'Технопарки Future Metals, создаваемые по модели OSTIM, подготовили более 100 гектаров земли для инвесторов в Чирчике, Ахангаране и Нуробаде.', uz: 'OSTİM modeli asosida rejalashtirilgan Future Metals texnoparklari Chirchiq, Ohangaron va Nurobodda 100 gektardan ortiq investitsiyaga tayyor yer tayyorladi.' } },
+  { date: '2026-05-05', cat: 'tr', source: 'gov.uz (MIIT)', url: 'https://gov.uz/en/miit/news/view/163181', img: 'https://api-portal.gov.uz/uploads/16/2026/05/08/2b8dee26-6bfa-2b41-a0b8-2bf214821793_lists_slider_.jpg',
+    t: { en: 'Uzbek-Turkish Business Forum Brings Together Over 170 Companies in Tashkent', tr: 'Özbek-Türk İş Forumu Taşkent’te 170’ten fazla şirketi bir araya getirdi', ru: 'Узбекско-турецкий бизнес-форум собрал в Ташкенте более 170 компаний', uz: 'O‘zbek-turk biznes forumi Toshkentda 170 dan ortiq kompaniyani birlashtirdi' },
+    s: { en: 'The forum with the OSTİM Foundation reported 43.8% bilateral trade growth over five years, $3.2 billion of investment in 2025 and 2,200 joint ventures.', tr: 'OSTİM Vakfı’nın da katıldığı forumda beş yılda ikili ticarette %43,8 artış, 2025’te 3,2 milyar dolar yatırım ve 2.200 ortak girişim açıklandı.', ru: 'На форуме с участием фонда OSTIM сообщили о росте товарооборота на 43,8% за пять лет, инвестициях $3,2 млрд в 2025 году и 2200 совместных предприятиях.', uz: 'OSTİM jamg‘armasi ishtirok etgan forumda besh yilda ikki tomonlama savdo 43,8 foizga oshgani, 2025-yilda 3,2 mlrd dollar investitsiya kiritilgani va 2200 ta qo‘shma korxona faoliyat yuritayotgani ma’lum qilindi.' } },
+  { date: '2026-11-04', cat: 'carbon', source: 'Trend', url: 'https://www.trend.az/casia/uzbekistan/4242637.html', img: 'https://www.trend.az/media/2026/06/06/world_bank_official.jpg',
+    t: { en: 'Uzbekistan moves toward carbon pricing with World Bank support', tr: 'Özbekistan, Dünya Bankası desteğiyle karbon fiyatlamasına yöneliyor', ru: 'Узбекистан движется к углеродному ценообразованию при поддержке Всемирного банка', uz: 'O‘zbekiston Jahon banki ko‘magida uglerod narxlashga o‘tmoqda' },
+    s: { en: 'Uzbekistan is preparing emissions monitoring, reporting and verification systems for major industrial facilities, groundwork for a future carbon tax that would also help exporters meet EU CBAM.', tr: 'Özbekistan büyük sanayi tesisleri için emisyon izleme, raporlama ve doğrulama sistemleri hazırlıyor; bu, ileride karbon vergisine ve ihracatçıların AB CBAM uyumuna zemin oluşturuyor.', ru: 'Узбекистан готовит системы мониторинга, отчётности и верификации выбросов для крупных промышленных объектов — основу будущего углеродного налога и соответствия экспортёров CBAM ЕС.', uz: 'O‘zbekiston yirik sanoat obyektlari uchun emissiyalarni monitoring, hisobot va tasdiqlash tizimlarini tayyorlamoqda; bu kelajakdagi uglerod solig‘i va eksportchilarning CBAMga moslashuviga asos bo‘ladi.' } },
+  { date: '2026-10-09', cat: 'digital', source: 'IT Park Uzbekistan', url: 'https://www.it-park.uz/en/itpark/news/it-park-uzbekistan-and-agency-for-the-development-of-light-industry-sign-mou-on-industrial-digitalization', img: 'https://www.it-park.uz/storage/images/news/normal/kbFHMn0HGzNavtEpalX5JGPKGMz9OkR0CkOFTn33.jpg',
+    t: { en: 'IT Park Uzbekistan and Agency For The Development Of Light Industry Sign MoU on Industrial Digitalization', tr: 'IT Park Uzbekistan ve Hafif Sanayi Geliştirme Ajansı sanayi dijitalleşmesi için mutabakat imzaladı', ru: 'IT Park Uzbekistan и Агентство развития лёгкой промышленности подписали меморандум о цифровизации промышленности', uz: 'IT Park Uzbekistan va Yengil sanoatni rivojlantirish agentligi sanoat raqamlashtirilishi bo‘yicha memorandum imzoladi' },
+    s: { en: 'The MoU aims to involve IT Park members in digitalizing and automating light-industry manufacturing and to build a local industrial automation ecosystem.', tr: 'Mutabakat, IT Park üyelerini hafif sanayi üretiminin dijitalleşmesi ve otomasyonuna dahil etmeyi ve yerel bir sanayi otomasyonu ekosistemi kurmayı hedefliyor.', ru: 'Меморандум направлен на вовлечение резидентов IT Park в цифровизацию и автоматизацию лёгкой промышленности и создание местной экосистемы промышленной автоматизации.', uz: 'Memorandum IT Park a’zolarini yengil sanoat ishlab chiqarishini raqamlashtirish va avtomatlashtirishga jalb qilish hamda mahalliy sanoat avtomatlashtirish ekotizimini yaratishni nazarda tutadi.' } },
+  { date: '2026-09-23', cat: 'zone', source: 'Trend', url: 'https://www.trend.az/casia/uzbekistan/4227003.html', img: 'https://www.trend.az/media/2026/09/23/shavkat_mirziyoyev_01.jpg',
+    t: { en: 'Uzbekistan launches $9.4B investment drive across Andijan region', tr: 'Özbekistan, Andican bölgesinde 9,4 milyar dolarlık yatırım hamlesi başlattı', ru: 'Узбекистан запускает инвестиционную программу на $9,4 млрд в Андижанской области', uz: 'O‘zbekiston Andijon viloyatida 9,4 mlrd dollarlik investitsiya dasturini boshladi' },
+    s: { en: '206 investment projects worth $9.4 billion were opened or launched in Andijan, expected to create more than 45,000 jobs.', tr: 'Andican’da toplam değeri 9,4 milyar dolar olan 206 yatırım projesi açıldı veya başlatıldı; 45 binden fazla istihdam bekleniyor.', ru: 'В Андижане открыты или запущены 206 инвестпроектов на сумму $9,4 млрд, которые создадут более 45 тысяч рабочих мест.', uz: 'Andijonda umumiy qiymati 9,4 mlrd dollar bo‘lgan 206 ta investitsiya loyihasi ochildi yoki boshlandi; 45 mingdan ortiq ish o‘rni yaratilishi kutilmoqda.' } },
+  { date: '2026-08-18', cat: 'zone', source: 'Trend', url: 'https://www.trend.az/casia/uzbekistan/4215930.html', img: 'https://www.trend.az/media/2026/08/18/shavkat_mirziyoyev_khorezm_dialogue.jpg',
+    t: { en: 'Uzbekistan unveils $27 bln pipeline of new industrial projects', tr: 'Özbekistan 27 milyar dolarlık yeni sanayi projeleri planını açıkladı', ru: 'Узбекистан представил пакет новых промышленных проектов на $27 млрд', uz: 'O‘zbekiston 27 mlrd dollarlik yangi sanoat loyihalari paketini e’lon qildi' },
+    s: { en: 'President Mirziyoyev said 105 new industrial and infrastructure projects worth $27 billion are planned to launch this year.', tr: 'Cumhurbaşkanı Mirziyoyev, bu yıl 27 milyar dolarlık 105 yeni sanayi ve altyapı projesinin başlatılmasının planlandığını söyledi.', ru: 'Президент Мирзиёев сообщил, что в этом году планируется запустить 105 новых промышленных и инфраструктурных проектов на $27 млрд.', uz: 'Prezident Mirziyoyev joriy yilda 27 mlrd dollarlik 105 ta yangi sanoat va infratuzilma loyihasi ishga tushirilishi rejalashtirilganini bildirdi.' } },
+  { date: '2026-07-30', cat: 'carbon', source: 'SUUS', url: 'https://suus.com/en/resources-insights/blog/central-asian-exporters-that-get-cbam-ready-will-gain-an-edge-on-the-eu-market',
+    t: { en: 'Central Asian exporters that get CBAM-ready will gain an edge on the EU market', tr: 'CBAM’e hazırlanan Orta Asyalı ihracatçılar AB pazarında avantaj kazanacak', ru: 'Экспортёры Центральной Азии, готовые к CBAM, получат преимущество на рынке ЕС', uz: 'CBAMga tayyor Markaziy Osiyo eksportchilari EI bozorida ustunlikka ega bo‘ladi' },
+    s: { en: 'CBAM entered its operational phase on 1 January 2026; certificate purchases are postponed to 1 February 2027, with the first annual declaration due by 30 September 2027.', tr: 'CBAM 1 Ocak 2026’da operasyonel aşamaya girdi; sertifika alımı 1 Şubat 2027’ye ertelendi, ilk yıllık beyan 30 Eylül 2027’ye kadar verilecek.', ru: 'CBAM вступил в операционную фазу 1 января 2026 года; покупка сертификатов отложена до 1 февраля 2027 года, первая годовая декларация — до 30 сентября 2027 года.', uz: 'CBAM 2026-yil 1-yanvarda operatsion bosqichga o‘tdi; sertifikat sotib olish 2027-yil 1-fevralga qoldirildi, birinchi yillik deklaratsiya 2027-yil 30-sentabrgacha topshiriladi.' } },
+  { date: '2026-07-29', cat: 'digital', source: 'ComNews', url: 'https://www.comnews.ru/content/246638/2026-07-29/2026-w31/1010/uzbekistan-realizuet-masshtabnuyu-programmu-cifrovizacii-promyshlennosti-investiciyami-12-mlrd',
+    t: { en: 'Uzbekistan is carrying out a large-scale industrial digitalisation programme worth $1.2 bn', tr: 'Özbekistan 1,2 milyar dolarlık büyük ölçekli sanayi dijitalleşme programı yürütüyor', ru: 'Узбекистан реализует масштабную программу цифровизации промышленности с инвестициями в $1,2 млрд', uz: 'O‘zbekiston 1,2 mlrd dollarlik keng ko‘lamli sanoat raqamlashtirish dasturini amalga oshirmoqda' },
+    s: { en: 'The programme covers oil and gas, mining, energy and manufacturing, with an Industry 4.0 Center being set up in 2026.', tr: 'Program petrol-gaz, madencilik, enerji ve imalat sektörlerini kapsıyor; 2026’da bir Sanayi 4.0 Merkezi kuruluyor.', ru: 'Программа охватывает нефтегаз, горнодобычу, энергетику и производство; в 2026 году создаётся Центр «Индустрия 4.0».', uz: 'Dastur neft-gaz, kon-metallurgiya, energetika va ishlab chiqarishni qamrab oladi; 2026-yilda «Industriya 4.0» markazi tashkil etilmoqda.' } },
+  { date: '2026-07-02', cat: 'digital', source: 'UzDaily', url: 'https://www.uzdaily.uz/en/kpmg-central-asian-firms-lead-in-industrial-ai-adoption/', img: 'https://www.uzdaily.uz/media/filer_public/ae/dd/aedd3a70-5941-4390-8393-2f800deaa928/innovacia2201_20260613102706.webp',
+    t: { en: 'KPMG: Central Asian Firms Lead in Industrial AI Adoption', tr: 'KPMG: Orta Asya şirketleri endüstriyel yapay zekâ kullanımında önde', ru: 'KPMG: компании Центральной Азии лидируют во внедрении промышленного ИИ', uz: 'KPMG: Markaziy Osiyo kompaniyalari sanoat sun’iy intellekti joriy etishda yetakchi' },
+    s: { en: '53% of surveyed regional firms run industrial AI in production versus 24% globally; all surveyed Uzbek firms plan digital-twin investments.', tr: 'Ankete katılan bölge şirketlerinin %53’ü endüstriyel yapay zekâyı üretimde kullanıyor (küresel ortalama %24); anketteki tüm Özbek şirketleri dijital ikiz yatırımı planlıyor.', ru: '53% опрошенных региональных компаний используют промышленный ИИ в производстве (в мире — 24%); все опрошенные узбекские компании планируют инвестиции в цифровые двойники.', uz: 'So‘rovdagi mintaqa kompaniyalarining 53 foizi sanoat sun’iy intellektini ishlab chiqarishda qo‘llaydi (dunyoda 24 foiz); so‘rovdagi barcha o‘zbek kompaniyalari raqamli egizak investitsiyalarini rejalashtirmoqda.' } },
+  { date: '2026-06-18', cat: 'zone', source: 'Intellinews', url: 'https://intellinews.com/tiif-2026-uzbekistan-looks-beyond-tax-breaks-as-special-economic-zones-become-engines-of-industrialisation-449249',
+    t: { en: 'TIIF 2026: Uzbekistan looks beyond tax breaks as special economic zones become engines of industrialisation', tr: 'TIIF 2026: Özel ekonomik bölgeler sanayileşmenin motoru olurken Özbekistan vergi avantajlarının ötesine bakıyor', ru: 'TIIF 2026: Узбекистан смотрит дальше налоговых льгот — СЭЗ становятся двигателями индустриализации', uz: 'TIIF 2026: Maxsus iqtisodiy zonalar sanoatlashtirish dvigateliga aylanar ekan, O‘zbekiston soliq imtiyozlaridan tashqariga qaramoqda' },
+    s: { en: 'Uzbekistan operates 47 free economic zones with about 1,400 investment projects; panellists said zones must compete on infrastructure, governance and skilled labour.', tr: 'Özbekistan’da yaklaşık 1.400 yatırım projesi barındıran 47 serbest ekonomik bölge var; panelistler bölgelerin altyapı, yönetişim ve nitelikli işgücüyle rekabet etmesi gerektiğini söyledi.', ru: 'В Узбекистане действует 47 свободных экономических зон примерно с 1400 инвестпроектами; участники панели отметили, что зоны должны конкурировать инфраструктурой, управлением и квалифицированной рабочей силой.', uz: 'O‘zbekistonda 1400 ga yaqin investitsiya loyihasi joylashgan 47 ta erkin iqtisodiy zona faoliyat yuritadi; ishtirokchilar zonalar infratuzilma, boshqaruv va malakali ishchi kuchi bilan raqobatlashishi kerakligini aytdi.' } },
+  { date: '2026-06-16', cat: 'zone', source: 'Euronews (sponsored)', url: 'https://www.euronews.com/2026/06/16/industrial-zones-attract-manufacturers-and-logistics-investment', img: 'https://images.euronews.com/articles/stories/09/77/61/04/1200x675_cmsv2_9429c145-3822-5521-a0c3-b091529de680-9776104.jpg',
+    t: { en: 'Industrial zones attract manufacturers and logistics investment', tr: 'Sanayi bölgeleri üreticileri ve lojistik yatırımlarını çekiyor', ru: 'Промышленные зоны привлекают производителей и логистические инвестиции', uz: 'Sanoat zonalari ishlab chiqaruvchilar va logistika investitsiyalarini jalb qilmoqda' },
+    s: { en: 'Industrial output in Uzbekistan’s special economic zones reached almost €3.12 billion in the first nine months of 2025, up 42.7%; the country operates 31 SEZs. (Sponsored content.)', tr: 'Özbekistan’ın özel ekonomik bölgelerinde sanayi üretimi 2025’in ilk dokuz ayında %42,7 artışla yaklaşık 3,12 milyar avroya ulaştı; ülkede 31 ÖEB var. (Sponsorlu içerik.)', ru: 'Промышленное производство в СЭЗ Узбекистана за девять месяцев 2025 года выросло на 42,7% до почти €3,12 млрд; в стране действует 31 СЭЗ. (Спонсорский материал.)', uz: 'O‘zbekiston MIZlarida sanoat ishlab chiqarishi 2025-yilning dastlabki to‘qqiz oyida 42,7 foizga oshib, qariyb 3,12 mlrd yevroga yetdi; mamlakatda 31 ta MIZ bor. (Homiylik materiali.)' } },
+  { date: '2026-02-16', cat: 'zone', source: 'Kabar', url: 'https://en.kabar.kg/news/uzbekistan-to-build-foreign-industrial-zone-in-fergana/', img: 'https://en.kabar.kg/media/images/uvtG7F.2e16d0ba.fill-1200x630.format-jpeg.jpegquality-65.jpg',
+    t: { en: 'Uzbekistan to build foreign industrial zone in Fergana', tr: 'Özbekistan Fergana’da yabancı sanayi bölgesi kuracak', ru: 'Узбекистан построит иностранную промышленную зону в Фергане', uz: 'O‘zbekiston Farg‘onada xorijiy sanoat zonasi quradi' },
+    s: { en: 'Agreements were signed for the Turon Turk industrial zone in Fergana region: Turkish company Heyal Holding has invested $350 million, with nearly 5,000 jobs planned.', tr: 'Fergana bölgesinde Turon Türk sanayi bölgesi için anlaşmalar imzalandı: Türk şirketi Heyal Holding 350 milyon dolar yatırım yaptı, yaklaşık 5 bin istihdam planlanıyor.', ru: 'Подписаны соглашения о промзоне «Турон Турк» в Ферганской области: турецкая Heyal Holding вложила $350 млн, планируется почти 5 тысяч рабочих мест.', uz: 'Farg‘ona viloyatida «Turon Turk» sanoat zonasi bo‘yicha kelishuvlar imzolandi: turk kompaniyasi Heyal Holding 350 mln dollar sarmoya kiritdi, qariyb 5 ming ish o‘rni rejalashtirilgan.' } },
+  { date: '2026-01-11', cat: 'carbon', source: 'gov.uz (MIIT)', url: 'https://gov.uz/en/miit/news/view/118666', img: 'https://api-portal.gov.uz/uploads/16/2026/01/11/b9e7cc26-9611-0b0c-30f3-55d0f72c7930_lists_slider_.jpg',
+    t: { en: 'Important for Uzbek exporters to the EU', tr: 'AB’ye ihracat yapan Özbek ihracatçılar için önemli', ru: 'Важно для узбекских экспортёров в ЕС', uz: 'EIga eksport qiluvchi o‘zbek eksportchilari uchun muhim' },
+    s: { en: 'From 2027 EU importers will start buying CBAM certificates, bringing direct costs for Uzbek exporters of fertilisers, aluminium, iron and steel and energy-intensive chemicals.', tr: '2027’den itibaren AB’li ithalatçılar CBAM sertifikası almaya başlayacak; bu, gübre, alüminyum, demir-çelik ve enerji yoğun kimya ihraç eden Özbek firmalar için doğrudan maliyet demek.', ru: 'С 2027 года импортёры ЕС начнут покупать сертификаты CBAM, что означает прямые расходы для узбекских экспортёров удобрений, алюминия, чёрных металлов и энергоёмкой химии.', uz: '2027-yildan EI importyorlari CBAM sertifikatlarini sotib ola boshlaydi; bu o‘g‘it, alyuminiy, temir-po‘lat va energiya talab qiladigan kimyo mahsulotlari eksport qiluvchi o‘zbek kompaniyalari uchun to‘g‘ridan-to‘g‘ri xarajat degani.' } }
 ];
 const AG = {
   tr: { empty: 'Henüz haber bulunmuyor', badge: 'GÜNDEM', ann: 'Duyurular', news: 'Haberler', detail: 'Detay', strip: 'Duyuru' },
@@ -1698,16 +1762,22 @@ function renderAgendaPage() {
       <span class="ag-body"><span class="tag">${t(dv.title)}</span><h3>${t(pg.title)}</h3><p>${t(pg.subtitle)}</p></span>
       <span class="ag-go">${a.detail} ${ARROW}</span></button>`;
   }).join('');
-  const news = NEWS.length ? NEWS.map(n => `<a class="card ag-item" data-hook href="${n.url}" target="_blank" rel="noopener" style="--c:#007397;--soft:#DDF1F7">
-      <span class="ag-date">${S('<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>', 'ico')}<b>${n.date || ''}</b></span>
-      <span class="ag-body"><span class="tag">${n.source}</span><h3>${n.title}</h3></span><span class="ag-go">${ARROW}</span></a>`).join('')
+  const CAT = { zone: { c: '#007397', soft: '#DDF1F7', l: { tr: 'Sanayi Bölgesi', uz: 'Sanoat zonasi', ru: 'Промзона', en: 'Industrial zones' } }, digital: { c: '#1D4ED8', soft: '#DBEAFE', l: { tr: 'Dijital Fabrika', uz: 'Raqamli zavod', ru: 'Цифровой завод', en: 'Digital factory' } }, tr: { c: '#EA580C', soft: '#FFEDD5', l: { tr: 'Türkiye–Özbekistan', uz: 'Turkiya–O‘zbekiston', ru: 'Турция–Узбекистан', en: 'Türkiye–Uzbekistan' } }, carbon: { c: '#059669', soft: '#D1FAE5', l: { tr: 'Karbon & CBAM', uz: 'Uglerod va CBAM', ru: 'Углерод и CBAM', en: 'Carbon & CBAM' } } };
+  const fmtD = d => { try { return new Date(d + 'T12:00:00').toLocaleDateString({ tr: 'tr-TR', uz: 'uz-UZ', ru: 'ru-RU', en: 'en-GB' }[state.lang], { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return d; } };
+  const nImg = (n, c) => `<span class="nw-img" style="--c:${c.c}">${n.img ? `<img src="${n.img}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}<i class="nw-ph">${S('<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>', 'ico')}</i></span>`;
+  const sorted = NEWS.slice().sort((x, y) => y.date.localeCompare(x.date));
+  const news = sorted.length ? `<div class="nw-grid">${sorted.map((n, i) => { const c = CAT[n.cat];
+      return `<a class="nw-card ${i === 0 ? 'nw-feat' : ''}" ${i === 0 ? 'data-hook' : ''} href="${n.url}" target="_blank" rel="noopener" style="--c:${c.c};--soft:${c.soft}">${nImg(n, c)}
+        <span class="nw-body"><span class="nw-meta"><span class="nw-tag">${c.l[state.lang]}</span><span class="nw-date">${fmtD(n.date)}</span></span>
+        <h3>${n.t[state.lang]}</h3><p>${n.s[state.lang]}</p>
+        <span class="nw-src">${n.source} ${ARROW}</span></span></a>`; }).join('')}</div>`
     : `<div class="ag-empty" data-hook>${S('<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>', 'ico')}<p>${a.empty}</p></div>`;
   const right = [['ann', a.ann, ANNOUNCEMENTS.length], ['news', a.news, NEWS.length]].map(([id, lab, n]) =>
     leafLink({ label: lab, small: String(n), click: `setAgendaTab('${id}')`, on: agendaTab === id })).join('');
   return `<div class="dmap" style="--c:#007397;--soft:#DDF1F7"><svg class="spine" aria-hidden="true"></svg>
   ${crumb([{ label: dict.nav.agenda }])}
   ${pageHero({ style: '--c:#007397;--soft:#DDF1F7', icon: S('<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>'), eyebrow: a.badge, title: dict.nav.agenda, right })}
-  <div class="ag-list">${agendaTab === 'ann' ? anns : news}</div></div>`;
+  <div class="${agendaTab === 'ann' ? 'ag-list' : 'ag-news'}">${agendaTab === 'ann' ? anns : news}</div></div>`;
 }
 
 // --- İLETİŞİM ---
