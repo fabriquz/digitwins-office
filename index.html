@@ -927,6 +927,7 @@ footer.site{background:linear-gradient(180deg,#fff,#F3F8FA);border-top:1px solid
 }
 @media(max-width:699px){.tree-wrap .tree .leaves{gap:16px}.tree-wrap .tree .subs{gap:36px}.tree-wrap .tree .groups{gap:34px}.hero{padding-bottom:4px!important}}
 .hero .lead,.phero p,.detail-body .sum,.bx p{max-width:70ch}
+.about-intro{margin:0 0 14px;padding:14px 20px;border-radius:16px;background:#fff;border:1px solid var(--line);border-left:4px solid #007397;font-size:15.5px;line-height:1.6;color:var(--ink-2);max-width:none!important}
 </style>
 </head>
 <body>
@@ -1820,11 +1821,8 @@ function renderAboutPage() {
   return `<div class="dmap" style="--c:#007397;--soft:#DDF1F7"><svg class="spine" aria-hidden="true"></svg>
   ${crumb([{ label: dict.aboutTitle }])}
   ${pageHero({ style: '--c:#007397;--soft:#DDF1F7', icon: '<span style="width:30px;height:33px;display:block"><svg class="dt-logo" viewBox="0 0 400 442" aria-hidden="true"><polygon points="197,221 359,131 359,311 197,401" fill="#22a6c9" stroke="#22a6c9" stroke-width="16" stroke-linejoin="round"/><path d="M197,41 L359,131 M197,41 L41,131 L197,221 M41,131 L41,311 L197,401" fill="none" stroke="#22a6c9" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><g fill="#fff" stroke="#22a6c9" stroke-width="18"><circle cx="197" cy="41" r="30"/><circle cx="41" cy="131" r="30"/><circle cx="197" cy="221" r="30"/><circle cx="41" cy="311" r="30"/></g></svg></span>', eyebrow: dict.aboutBadge, title: dict.aboutTitle, sub: dict.aboutSub, right })}
+  <p class="about-intro" data-hook>${({ tr: 'DigiTwins, sanayi bölgelerinin kuruluşundan yatırımcı çekmeye, saha yönetiminden akıllı fabrika hatlarına kadar tüm alanlarda operasyonel çözümler üretir. Platformlar, Akademi, Danışmanlık ve Zirve başlıkları altında çalışır; GreenCarbonAI ile karbon ayak izi ve SKDM (CBAM) tarafını da destekler.', en: 'DigiTwins delivers operational solutions across every area, from setting up industrial zones and attracting investors to site management and smart factory lines. We work through Platforms, Academy, Consulting and Summit, and support the carbon side with GreenCarbonAI, covering carbon footprint and SKDM (CBAM).', ru: 'DigiTwins создаёт операционные решения во всех областях: от создания промышленных зон и привлечения инвесторов до управления территорией и умных заводских линий. Мы работаем по направлениям «Платформы», «Академия», «Консалтинг» и «Саммит», а углеродное направление поддерживаем через GreenCarbonAI: углеродный след и СКДМ (CBAM).', uz: 'DigiTwins sanoat zonalarini tashkil etishdan investor jalb qilishgacha, hududni boshqarishdan aqlli zavod liniyalarigacha barcha yo‘nalishlarda operatsion yechimlar yaratadi. Platformalar, Akademiya, Konsalting va Sammit yo‘nalishlarida ishlaydi; GreenCarbonAI orqali uglerod izi va SKDM (CBAM) tomonini ham qo‘llab-quvvatlaydi.' })[state.lang]}</p>
   <div class="bento">
-    <section class="bx bx-stats" data-hook>
-      ${stats.map(([n, l, ic]) => `<div class="st"><span class="st-i">${ic}</span><b>${String(n).padStart(2, '0')}</b><span>${l}</span></div>`).join('')}
-      <div class="st route">${FLAGS.tr}<span class="line"></span><span class="plane">${S('<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>', 'ico-sm')}</span><span class="line"></span>${FLAGS.uz}</div>
-    </section>
     <section class="bx bx-vm" data-hook="top" style="--a:#007397">
       <span class="big-i">${S('<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>')}</span>
       <div class="bx-h"><span class="num">01</span><h2>${dict.visionTitle}</h2></div>
